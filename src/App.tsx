@@ -1,6 +1,7 @@
-import React from 'react';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { Home } from "./components/Home";
 import { FC } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
 import { Register } from "./components/Register/Register";
 import { Login } from "./components/Login/Login";
 import { Context } from "./ContextProvider";
@@ -8,9 +9,11 @@ import { Context } from "./ContextProvider";
 export const App: FC = () => {
   return (
     <>
+      App
       <Routes>
-      <Route path="/register" element={<Register />}></Route>
-      <Route path="/login" element={<Login />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/login" element={<Login />}></Route>
       
       </Routes>
     </>
