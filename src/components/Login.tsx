@@ -6,6 +6,8 @@ import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Box, TextField, Typography, Button } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./styles/Styles";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -22,63 +24,69 @@ export const Login = () => {
   return (
     <>
       <div>
-        <Typography variant="h5" padding={3} textAlign="center">
-          Zaloguj się, aby korzystać z aplikacji
-        </Typography>
-        <form>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            maxWidth={400}
-            alignItems={"center"}
-            justifyContent={"center"}
-            margin={"auto"}
-            marginTop={5}
+        <ThemeProvider theme={theme}>
+          <Typography
+            color="primary.main"
+            variant="h5"
             padding={3}
-            borderRadius={5}
-            // boxShadow={5, 5, 10 #ccc}
-            sx={{
-              ":hover": {
-                boxShadow: "10px 10px 20px #ccc",
-              },
-            }}
+            textAlign="center"
+            marginTop={5}
           >
-            <TextField
-              onChange={(event) => setLogin(event.target.value)}
-              margin="normal"
-              type={"email"}
-              variant="outlined"
-              placeholder="wpisz swój email"
-              label="E-mail"
-            />
-            <TextField
-              onChange={(event) => setPassword(event.target.value)}
-              margin="normal"
-              type={"password"}
-              variant="outlined"
-              placeholder="wpisz swóje hasło"
-              label="Hasło"
-            />
-
-            <Button
-              onClick={onLogin}
-              sx={{ marginTop: 3, borderRadius: 3 }}
-              variant="contained"
-              color="warning"
+            Zaloguj się, aby korzystać z aplikacji
+          </Typography>
+          <form>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              maxWidth={400}
+              alignItems={"center"}
+              justifyContent={"center"}
+              margin={"auto"}
+              padding={3}
+              borderRadius={5}
+              // boxShadow={5, 5, 10 #ccc}
+              sx={{
+                ":hover": {
+                  boxShadow: "10px 10px 20px #ccc",
+                },
+              }}
             >
-              Zaloguj
-            </Button>
-            <p>
+              <TextField
+                onChange={(event) => setLogin(event.target.value)}
+                margin="normal"
+                type={"email"}
+                variant="outlined"
+                placeholder="wpisz swój email"
+                label="E-mail"
+              />
+              <TextField
+                onChange={(event) => setPassword(event.target.value)}
+                margin="normal"
+                type={"password"}
+                variant="outlined"
+                placeholder="wpisz swóje hasło"
+                label="Hasło"
+              />
+
               <Button
-                onClick={() => {
-                  navigate("/register");
-                }}
+                onClick={onLogin}
+                sx={{ marginTop: 3, borderRadius: 3 }}
+                variant="contained"
               >
-                Nie masz konta? Przejdź do rejestracji
+                Zaloguj
               </Button>
-            </p>
-          </Box>
-        </form>
+              <p>
+                <Button
+                  onClick={() => {
+                    navigate("/register");
+                  }}
+                >
+                  Nie masz konta? Przejdź do rejestracji
+                </Button>
+              </p>
+            </Box>
+          </form>
+        </ThemeProvider>
       </div>
     </>
   );

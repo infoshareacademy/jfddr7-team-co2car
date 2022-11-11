@@ -9,6 +9,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Box, TextField, Typography, Button } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./styles/Styles";
 
 /*interface RegisterProps {
   registerEmail: string;
@@ -36,63 +38,69 @@ export const Register = () => {
   return (
     <>
       <div>
-        <Typography variant="h5" padding={3} textAlign="center">
-          Proszę zarejestruj się, żeby korzystać z aplikacji
-        </Typography>
-        <form>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            maxWidth={400}
-            alignItems={"center"}
-            justifyContent={"center"}
-            margin={"auto"}
-            marginTop={5}
+        <ThemeProvider theme={theme}>
+          <Typography
+            variant="h5"
             padding={3}
-            borderRadius={5}
-            // boxShadow={5, 5, 10 #ccc}
-            sx={{
-              ":hover": {
-                boxShadow: "10px 10px 20px #ccc",
-              },
-            }}
+            textAlign="center"
+            color="primary.main"
+            marginTop={5}
           >
-            <TextField
-              onChange={(event) => setRegisterEmail(event.target.value)}
-              margin="normal"
-              type={"email"}
-              variant="outlined"
-              placeholder="wpisz swój email"
-              label="E-mail"
-            />
-            <TextField
-              onChange={(event) => setRegisterPassword(event.target.value)}
-              margin="normal"
-              type={"password"}
-              variant="outlined"
-              placeholder="wpisz swóje hasło"
-              label="Hasło"
-            />
-
-            <Button
-              onClick={onRegister}
-              sx={{ marginTop: 3, borderRadius: 3 }}
-              variant="contained"
-              color="warning"
+            Proszę zarejestruj się, żeby korzystać z aplikacji
+          </Typography>
+          <form>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              maxWidth={400}
+              alignItems={"center"}
+              justifyContent={"center"}
+              margin={"auto"}
+              padding={3}
+              borderRadius={5}
+              // boxShadow={5, 5, 10 #ccc}
+              sx={{
+                ":hover": {
+                  boxShadow: "10px 10px 20px #ccc",
+                },
+              }}
             >
-              Zarejestruj
-            </Button>
-            <p>
+              <TextField
+                onChange={(event) => setRegisterEmail(event.target.value)}
+                margin="normal"
+                type={"email"}
+                variant="outlined"
+                placeholder="wpisz swój email"
+                label="E-mail"
+              />
+              <TextField
+                onChange={(event) => setRegisterPassword(event.target.value)}
+                margin="normal"
+                type={"password"}
+                variant="outlined"
+                placeholder="wpisz swóje hasło"
+                label="Hasło"
+              />
+
               <Button
-                onClick={() => {
-                  navigate("/login");
-                }}
+                onClick={onRegister}
+                sx={{ marginTop: 3, borderRadius: 3 }}
+                variant="contained"
               >
-                Masz konto? Przejdź do logowania
+                Zarejestruj
               </Button>
-            </p>
-          </Box>
-        </form>
+              <p>
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Masz konto? Przejdź do logowania
+                </Button>
+              </p>
+            </Box>
+          </form>
+        </ThemeProvider>
       </div>
     </>
   );
