@@ -22,32 +22,34 @@ export const Navigation: FC = () => {
           CO2CAR
         </Typography>
         <Typography sx={{ flexGrow: 1 }}>{username}</Typography>
-        <Stack direction="row" spacing={2}>
-          <Button
-            color="inherit"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            Strona Główna
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            Profil
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              handleLogOut();
-            }}
-          >
-            Wyloguj
-          </Button>
-        </Stack>
+        {!!username && (
+          <Stack direction="row" spacing={2}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Strona Główna
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              Profil
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
+              Wyloguj
+            </Button>
+          </Stack>
+        )}
       </Toolbar>
     </AppBar>
   );

@@ -3,8 +3,11 @@ import { createContext, FC, ReactElement, useState } from "react";
 interface ContextState {
   username: string;
   setUsername: (username: string) => void;
+  trip: {};
+  setTrip: (trip: {}) => void;
 }
-
+/*songs: string[];
+  setSongs: (songs: string[]) => void;*/
 interface ContextProviderProps {
   children: ReactElement;
 }
@@ -14,10 +17,10 @@ export const Context = createContext(defaultContextValue);
 
 export const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
   const [username, setUsername] = useState("");
-  
+  const [trip, setTrip] = useState({});
 
   return (
-    <Context.Provider value={{ username, setUsername }}>
+    <Context.Provider value={{ username, setUsername, trip, setTrip }}>
       {children}
     </Context.Provider>
   );

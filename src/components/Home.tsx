@@ -11,22 +11,17 @@ import {
   Box,
   SelectChangeEvent,
 } from "@mui/material";
+import {
+  DatePicker,
+  LocalizationProvider,
+  // AdapterDayjs,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
+// import "dayjs/locale/pl";
+// import { pl } from "dayjs/locale";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
-
-// interface Body {
-//   type: string;
-//   distance_unit: string;
-//   distance_value: number;
-//   vehicle_model_id: string;
-// }
-
-// const sampleBody: Body = {
-//   type: "vehicle",
-//   distance_unit: "km",
-//   distance_value: 77777,
-//   vehicle_model_id: "sample_id",
-// };
 
 interface SingleCar {
   make: string;
@@ -60,12 +55,11 @@ export const Home: FC = () => {
 
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
   const [vehicleModels, setVehicleModels] = useState<SingleCar[]>([emptyCar]);
-  const [carbon, setCarbon] = useState(0);
-  const [makeId, setMakeId] = useState(0);
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
   const [emission, setEmission] = useState(0);
+  const [date, setDate] = useState<Dayjs | null>(null);
 
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
     setChosenMake(e.target.value);
@@ -106,17 +100,6 @@ export const Home: FC = () => {
       return 0;
     });
   };
-
-  // const compareFn = (a, b) => {
-  //   if (a.make < b.make) {
-  //     return -1;
-  //   }
-  //   if (a.make > b.make) {
-  //     return 1;
-  //   }
-  //   // a must be equal to b
-  //   return 0;
-  // }
 
   useEffect(() => {
     const fetchMakes = async () => {
@@ -213,6 +196,26 @@ export const Home: FC = () => {
     }
   };
 
+  // const addSong = async (): Promise<void> => {
+  //   if (newSong) {
+  //     try {
+  //       const songId = uuid();
+  //       await setDoc(doc(firebaseDb, "Songs", songId), {
+  //         name: newSong,
+  //         owner: username,
+  //       });
+  //       const updatedSongs = [...songs, newSong];
+  //       setSongs(updatedSongs);
+  //       if (inputRef.current) {
+  //         inputRef.current.value = "";
+  //       }
+  //       setNewSong("");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
@@ -280,6 +283,23 @@ export const Home: FC = () => {
               ))}
             </Select>
           </FormControl>
+
+          <FormControl sx={{ minWidth: 300, m: 1 }}>
+            <LocalizationProvider
+              dateAdapter={AdapterDayjs}
+              // locale={pl}
+            >
+              <DatePicker
+                label="Data"
+                value={date}
+                onChange={(newDate) => {
+                  setDate(newDate);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+
           <Button
             variant="contained"
             color="primary"
