@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/jfddr7-team-co2car/static/css/main.e6c13ad2.css",
+    "main.js": "/jfddr7-team-co2car/static/js/main.77d3b643.js",
+    "static/js/787.fe79f6ad.chunk.js": "/jfddr7-team-co2car/static/js/787.fe79f6ad.chunk.js",
+    "index.html": "/jfddr7-team-co2car/index.html",
+    "main.e6c13ad2.css.map": "/jfddr7-team-co2car/static/css/main.e6c13ad2.css.map",
+    "main.77d3b643.js.map": "/jfddr7-team-co2car/static/js/main.77d3b643.js.map",
+    "787.fe79f6ad.chunk.js.map": "/jfddr7-team-co2car/static/js/787.fe79f6ad.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.77d3b643.js"
+  ]
+}
