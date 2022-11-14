@@ -1,6 +1,7 @@
 {
   "name": "jfddr7-team-co2car",
   "version": "0.1.0",
+  "homepage": "https://infoshareacademy.github.io/jfddr7-team-co2car",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -14,6 +15,7 @@
     "@types/node": "^16.18.3",
     "firebase": "^9.13.0",
     "firestore": "^1.1.6",
+    "gh-pages": "^4.0.0",
     "navigator": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "CI=false npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
