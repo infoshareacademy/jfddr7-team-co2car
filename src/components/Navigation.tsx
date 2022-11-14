@@ -17,7 +17,7 @@ export const Navigation: FC = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar sx={{ flexBasis: "100%" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CO2CAR
         </Typography>

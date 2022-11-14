@@ -14,6 +14,20 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
 
+// interface Body {
+//   type: string;
+//   distance_unit: string;
+//   distance_value: number;
+//   vehicle_model_id: string;
+// }
+
+// const sampleBody: Body = {
+//   type: "vehicle",
+//   distance_unit: "km",
+//   distance_value: 77777,
+//   vehicle_model_id: "sample_id",
+// };
+
 interface SingleCar {
   make: string;
   makeId: string;
@@ -51,6 +65,7 @@ export const Home: FC = () => {
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
+  const [emission, setEmission] = useState(0);
 
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
     setChosenMake(e.target.value);
@@ -65,6 +80,43 @@ export const Home: FC = () => {
   ) => {
     setDistance(Number(e.target.value));
   };
+
+  const sortedMakes = () => {
+    return vehicleMakes.sort((a, b) => {
+      if (a.make && b.make) {
+        const model1 = a.make.toUpperCase();
+        const model2 = b.make.toUpperCase();
+        if (model1 < model2) return -1;
+        if (model1 > model2) return 1;
+        return 0;
+      }
+      return 0;
+    });
+  };
+
+  const sortedModels = () => {
+    return vehicleModels.sort((a, b) => {
+      if (a.model && b.model) {
+        const model1 = a.model.toUpperCase();
+        const model2 = b.model.toUpperCase();
+        if (model1 < model2) return -1;
+        if (model1 > model2) return 1;
+        return 0;
+      }
+      return 0;
+    });
+  };
+
+  // const compareFn = (a, b) => {
+  //   if (a.make < b.make) {
+  //     return -1;
+  //   }
+  //   if (a.make > b.make) {
+  //     return 1;
+  //   }
+  //   // a must be equal to b
+  //   return 0;
+  // }
 
   useEffect(() => {
     const fetchMakes = async () => {
@@ -130,6 +182,37 @@ export const Home: FC = () => {
     fetchModels();
   }, [chosenMake]);
 
+  const fetchEmission = async () => {
+    console.log(distance);
+    console.log(chosenModel);
+    try {
+      const response = await fetch(
+        "https://www.carboninterface.com/api/v1/estimates",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            type: "vehicle",
+            distance_unit: "km",
+            distance_value: distance,
+            vehicle_model_id: chosenModel,
+          }),
+        }
+      );
+      if (!response.ok) throw Error("Did not recieve expected data");
+      const object = await response.json();
+      const currentEmission = object.data.attributes.carbon_kg;
+      console.log(currentEmission);
+      setEmission(currentEmission);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
@@ -170,7 +253,8 @@ export const Home: FC = () => {
               onChange={(e) => handleChangeMake(e)}
             >
               <MenuItem value={""}>-</MenuItem>
-              {vehicleMakes.map((element, index) => (
+
+              {sortedMakes().map((element, index) => (
                 <MenuItem value={element.makeId} key={index}>
                   {element.make}
                 </MenuItem>
@@ -189,17 +273,31 @@ export const Home: FC = () => {
               onChange={(e) => handleChangeModel(e)}
             >
               <MenuItem value={""}>-</MenuItem>
-              {vehicleModels.map((element, index) => (
+              {sortedModels().map((element, index) => (
                 <MenuItem value={element.modelId} key={index}>
                   {element.model}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" color="primary" sx={{ m: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={fetchEmission}
+          >
             Oblicz emisję
           </Button>
-          <div> to jest div pokazujący wynik</div>
+          <Typography
+            marginTop={1}
+            marginBottom={1}
+            variant="h5"
+            padding={3}
+            textAlign="center"
+            color="primary.main"
+          >
+            {emission} kg
+          </Typography>
 
           {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
           <Button variant="contained" color="primary" sx={{ m: 1 }}>
