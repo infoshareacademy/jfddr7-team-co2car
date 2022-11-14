@@ -17,37 +17,39 @@ export const Navigation: FC = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar sx={{ flexBasis: "100%" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CO2CAR
         </Typography>
         <Typography sx={{ flexGrow: 1 }}>{username}</Typography>
-        <Stack direction="row" spacing={2}>
-          <Button
-            color="inherit"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            Strona Główna
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            Profil
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              handleLogOut();
-            }}
-          >
-            Wyloguj
-          </Button>
-        </Stack>
+        {!!username && (
+          <Stack direction="row" spacing={2}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Strona Główna
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              Profil
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
+              Wyloguj
+            </Button>
+          </Stack>
+        )}
       </Toolbar>
     </AppBar>
   );

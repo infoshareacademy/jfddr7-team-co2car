@@ -9,18 +9,33 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
 
+const INVALID_EMAIL_ERROR = "auth/invalid-email";
+
 export const Login = () => {
   const navigate = useNavigate();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const { setUsername } = useContext(Context);
+  const [error, setError] = useState("");
+
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    await signInWithEmailAndPassword(auth, login, password);
-    setUsername(login);
-    navigate("/home");
+    try {
+      await signInWithEmailAndPassword(auth, login, password);
+      setUsername(login);
+      navigate("/home");
+    } catch ({ code, message }) {
+      if (code === INVALID_EMAIL_ERROR) {
+        setError("Niepoprawny adres e-mail.");
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+        return;
+      }
+    }
   };
+
   return (
     <>
       <div>
@@ -67,7 +82,9 @@ export const Login = () => {
                 placeholder="wpisz swóje hasło"
                 label="Hasło"
               />
-
+              <Typography sx={{ height: 20, color: "secondary.main" }}>
+                {error}
+              </Typography>
               <Button
                 onClick={onLogin}
                 sx={{ marginTop: 3, borderRadius: 3 }}
@@ -91,25 +108,3 @@ export const Login = () => {
     </>
   );
 };
-
-{
-  /* <Box
-  display={"flex"}
-  flexDirection={"column"}
-  maxWidth={400}
-  alignItems={"center"}
-  justifyContent={"center"}
-  margin={"auto"}
-  marginTop={5}
-  padding={3}
-  borderRadius={5}
-  boxShadow={5px 5px 10px #ccc}
-  sx={{":hover":{
-    boxShadow:"10px 10px 20px #ccc"
-  },}}
->
-
-<Button to="/register">Przejdź do rejestracji</Button>
-
-</Box> */
-}

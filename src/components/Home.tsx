@@ -11,6 +11,15 @@ import {
   Box,
   SelectChangeEvent,
 } from "@mui/material";
+import {
+  DatePicker,
+  LocalizationProvider,
+  // AdapterDayjs,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
+// import "dayjs/locale/pl";
+// import { pl } from "dayjs/locale";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
 
@@ -46,11 +55,11 @@ export const Home: FC = () => {
 
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
   const [vehicleModels, setVehicleModels] = useState<SingleCar[]>([emptyCar]);
-  const [carbon, setCarbon] = useState(0);
-  const [makeId, setMakeId] = useState(0);
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
+  const [emission, setEmission] = useState(0);
+  const [date, setDate] = useState<Dayjs | null>(null);
 
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
     setChosenMake(e.target.value);
@@ -64,6 +73,32 @@ export const Home: FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setDistance(Number(e.target.value));
+  };
+
+  const sortedMakes = () => {
+    return vehicleMakes.sort((a, b) => {
+      if (a.make && b.make) {
+        const model1 = a.make.toUpperCase();
+        const model2 = b.make.toUpperCase();
+        if (model1 < model2) return -1;
+        if (model1 > model2) return 1;
+        return 0;
+      }
+      return 0;
+    });
+  };
+
+  const sortedModels = () => {
+    return vehicleModels.sort((a, b) => {
+      if (a.model && b.model) {
+        const model1 = a.model.toUpperCase();
+        const model2 = b.model.toUpperCase();
+        if (model1 < model2) return -1;
+        if (model1 > model2) return 1;
+        return 0;
+      }
+      return 0;
+    });
   };
 
   useEffect(() => {
@@ -130,6 +165,57 @@ export const Home: FC = () => {
     fetchModels();
   }, [chosenMake]);
 
+  const fetchEmission = async () => {
+    console.log(distance);
+    console.log(chosenModel);
+    try {
+      const response = await fetch(
+        "https://www.carboninterface.com/api/v1/estimates",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            type: "vehicle",
+            distance_unit: "km",
+            distance_value: distance,
+            vehicle_model_id: chosenModel,
+          }),
+        }
+      );
+      if (!response.ok) throw Error("Did not recieve expected data");
+      const object = await response.json();
+      const currentEmission = object.data.attributes.carbon_kg;
+      console.log(currentEmission);
+      setEmission(currentEmission);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const addSong = async (): Promise<void> => {
+  //   if (newSong) {
+  //     try {
+  //       const songId = uuid();
+  //       await setDoc(doc(firebaseDb, "Songs", songId), {
+  //         name: newSong,
+  //         owner: username,
+  //       });
+  //       const updatedSongs = [...songs, newSong];
+  //       setSongs(updatedSongs);
+  //       if (inputRef.current) {
+  //         inputRef.current.value = "";
+  //       }
+  //       setNewSong("");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
@@ -170,7 +256,8 @@ export const Home: FC = () => {
               onChange={(e) => handleChangeMake(e)}
             >
               <MenuItem value={""}>-</MenuItem>
-              {vehicleMakes.map((element, index) => (
+
+              {sortedMakes().map((element, index) => (
                 <MenuItem value={element.makeId} key={index}>
                   {element.make}
                 </MenuItem>
@@ -189,17 +276,48 @@ export const Home: FC = () => {
               onChange={(e) => handleChangeModel(e)}
             >
               <MenuItem value={""}>-</MenuItem>
-              {vehicleModels.map((element, index) => (
+              {sortedModels().map((element, index) => (
                 <MenuItem value={element.modelId} key={index}>
                   {element.model}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" color="primary" sx={{ m: 1 }}>
+
+          <FormControl sx={{ minWidth: 300, m: 1 }}>
+            <LocalizationProvider
+              dateAdapter={AdapterDayjs}
+              // locale={pl}
+            >
+              <DatePicker
+                label="Data"
+                value={date}
+                onChange={(newDate) => {
+                  setDate(newDate);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={fetchEmission}
+          >
             Oblicz emisję
           </Button>
-          <div> to jest div pokazujący wynik</div>
+          <Typography
+            marginTop={1}
+            marginBottom={1}
+            variant="h5"
+            padding={3}
+            textAlign="center"
+            color="primary.main"
+          >
+            {emission} kg
+          </Typography>
 
           {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
           <Button variant="contained" color="primary" sx={{ m: 1 }}>

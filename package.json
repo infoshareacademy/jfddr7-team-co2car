@@ -8,16 +8,19 @@
     "@emotion/styled": "^11.10.5",
     "@mui/base": "^5.0.0-alpha.105",
     "@mui/material": "^5.10.13",
+    "@mui/x-date-pickers": "^5.0.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.3",
+    "dayjs": "^1.11.6",
     "firebase": "^9.13.0",
     "firestore": "^1.1.6",
     "gh-pages": "^4.0.0",
     "navigator": "^1.0.1",
     "react": "^18.2.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
@@ -53,6 +56,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
+    "@types/react-datepicker": "^4.8.0",
     "@types/react-dom": "^18.0.8"
   }
 }
