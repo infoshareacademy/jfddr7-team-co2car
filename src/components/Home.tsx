@@ -11,6 +11,8 @@ import {
   Box,
   SelectChangeEvent,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./styles/Styles";
 
 interface SingleCar {
   make: string;
@@ -129,73 +131,82 @@ export const Home: FC = () => {
   }, [chosenMake]);
 
   return (
-    <Container maxWidth="md">
-      <Typography variant="h5" padding={3} textAlign="center">
-        Oblicz emisję dwutlenku węgla swojego samochodu
-      </Typography>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        margin={"auto"}
-      >
-        <FormControl sx={{ minWidth: 300, m: 1 }}>
-          <TextField
-            id="dystans"
-            label="Dystans (km)"
-            type="number"
-            onChange={(e) => handleDistance(e)}
-          ></TextField>
-        </FormControl>
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="md">
+        <Typography
+          marginTop={5}
+          marginBottom={5}
+          variant="h5"
+          padding={3}
+          textAlign="center"
+          color="primary.main"
+        >
+          Oblicz emisję dwutlenku węgla swojego samochodu
+        </Typography>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          margin={"auto"}
+        >
+          <FormControl sx={{ minWidth: 300, m: 1 }}>
+            <TextField
+              id="dystans"
+              label="Dystans (km)"
+              type="number"
+              onChange={(e) => handleDistance(e)}
+            ></TextField>
+          </FormControl>
 
-        <FormControl sx={{ minWidth: 300, m: 1 }}>
-          <InputLabel id="marka">Marka</InputLabel>
-          <Select
-            labelId="marka"
-            id="marka"
-            label="Marka"
-            defaultValue=""
-            value={chosenMake}
-            onChange={(e) => handleChangeMake(e)}
-          >
-            <MenuItem value={""}>-</MenuItem>
-            {vehicleMakes.map((element, index) => (
-              <MenuItem value={element.makeId} key={index}>
-                {element.make}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <FormControl sx={{ minWidth: 300, m: 1 }}>
+            <InputLabel id="marka">Marka</InputLabel>
+            <Select
+              labelId="marka"
+              id="marka"
+              label="Marka"
+              defaultValue=""
+              value={chosenMake}
+              onChange={(e) => handleChangeMake(e)}
+            >
+              <MenuItem value={""}>-</MenuItem>
+              {vehicleMakes.map((element, index) => (
+                <MenuItem value={element.makeId} key={index}>
+                  {element.make}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ minWidth: 300, m: 1 }}>
-          <InputLabel id="model">Model</InputLabel>
-          <Select
-            labelId="model"
-            id="model"
-            label="Model"
-            defaultValue=""
-            value={chosenModel}
-            onChange={(e) => handleChangeModel(e)}
-          >
-            <MenuItem value={""}>-</MenuItem>
-            {vehicleModels.map((element, index) => (
-              <MenuItem value={element.modelId} key={index}>
-                {element.model}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="primary" sx={{ m: 1 }}>
-          Oblicz emisję
-        </Button>
-        <div> to jest div pokazujący wynik</div>
+          <FormControl sx={{ minWidth: 300, m: 1 }}>
+            <InputLabel id="model">Model</InputLabel>
+            <Select
+              labelId="model"
+              id="model"
+              label="Model"
+              defaultValue=""
+              value={chosenModel}
+              onChange={(e) => handleChangeModel(e)}
+            >
+              <MenuItem value={""}>-</MenuItem>
+              {vehicleModels.map((element, index) => (
+                <MenuItem value={element.modelId} key={index}>
+                  {element.model}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained" color="primary" sx={{ m: 1 }}>
+            Oblicz emisję
+          </Button>
+          <div> to jest div pokazujący wynik</div>
 
-        {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
-        <Button variant="contained" color="primary" sx={{ m: 1 }}>
-          Zapisz wynik
-        </Button>
-      </Box>
-    </Container>
+          {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
+          <Button variant="contained" color="primary" sx={{ m: 1 }}>
+            Zapisz wynik
+          </Button>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };

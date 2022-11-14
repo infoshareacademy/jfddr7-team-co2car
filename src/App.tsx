@@ -9,6 +9,8 @@ import { Navigation } from "./components/Navigation";
 import { Context } from "./ContextProvider";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth, firebaseDb } from "./index";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./components/styles/Styles";
 
 export const App: FC = () => {
   const navigate = useNavigate();
@@ -35,13 +37,15 @@ export const App: FC = () => {
 
   return (
     <>
-      <Navigation />
-      <Routes>
-        <Route path="/home" element={<Home />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <Navigation />
+        <Routes>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+        </Routes>
+      </ThemeProvider>
     </>
   );
 };
