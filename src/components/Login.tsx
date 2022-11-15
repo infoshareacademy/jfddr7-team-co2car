@@ -59,12 +59,6 @@ export const Login = () => {
               margin={"auto"}
               padding={3}
               borderRadius={5}
-              // boxShadow={5, 5, 10 #ccc}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-              }}
             >
               <TextField
                 onChange={(event) => setLogin(event.target.value)}
