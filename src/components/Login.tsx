@@ -81,7 +81,7 @@ export const Login = () => {
               </Typography>
               <Button
                 onClick={onLogin}
-                sx={{ marginTop: 3, borderRadius: 3 }}
+                sx={{ marginTop: 3 }}
                 variant="contained"
               >
                 Sign in
@@ -95,6 +95,15 @@ export const Login = () => {
                   You don't have an account? Go to registration
                 </Button>
               </p>
+              <Button
+                onClick={() => {
+                  navigate("/home");
+                }}
+                sx={{ marginTop: 3 }}
+                variant="contained"
+              >
+                Continue without signing in
+              </Button>
             </Box>
           </form>
         </ThemeProvider>
