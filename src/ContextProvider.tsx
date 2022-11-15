@@ -5,6 +5,8 @@ interface ContextState {
   setUsername: (username: string) => void;
   trip: {};
   setTrip: (trip: {}) => void;
+  emission: number;
+  setEmission: (emission: number) => void;
 }
 /*songs: string[];
   setSongs: (songs: string[]) => void;*/
@@ -18,9 +20,12 @@ export const Context = createContext(defaultContextValue);
 export const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
   const [username, setUsername] = useState("");
   const [trip, setTrip] = useState({});
+  const [emission, setEmission] = useState(0);
 
   return (
-    <Context.Provider value={{ username, setUsername, trip, setTrip }}>
+    <Context.Provider
+      value={{ username, setUsername, trip, setTrip, emission, setEmission }}
+    >
       {children}
     </Context.Provider>
   );

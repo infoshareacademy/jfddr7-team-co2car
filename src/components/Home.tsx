@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { Dayjs } from "dayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
@@ -21,6 +20,7 @@ import { firebaseDb } from "..";
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import { Context } from "./../ContextProvider";
+import { BarChart } from "./BarChart";
 
 // interface Trip {
 //   emission: number;
@@ -33,6 +33,7 @@ interface Date {
   month: number;
   year: number;
 }
+
 interface SingleCar {
   make: string;
   makeId: string;
@@ -61,7 +62,8 @@ const emptyCar: SingleCar = {
 };
 
 export const Home: FC = () => {
-  const { username, trip, setTrip } = useContext(Context);
+  const { username, trip, setTrip, emission, setEmission } =
+    useContext(Context);
 
   const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
 
@@ -70,21 +72,7 @@ export const Home: FC = () => {
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
-  const [emission, setEmission] = useState(0);
-  const [dateRaw, setDateRaw] = useState<Dayjs | null>(null);
   const [date, setDate] = useState<Dayjs | null>(null);
-
-  // const handleChangeDate = (e: Dayjs | null) => {
-  //   if (e) {
-  //   //   setDate({
-  //   //     day: e.day(),
-  //   //     month: e.month(),
-  //   //     year: e.year(),
-  //   //   });
-  //   }
-  //   console.log(e?.month());
-  //   console.log(date);
-  // };
 
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
     setChosenMake(e.target.value);
@@ -240,8 +228,8 @@ export const Home: FC = () => {
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
         <Typography
-          marginTop={5}
-          marginBottom={5}
+          marginTop={1}
+          marginBottom={1}
           variant="h5"
           padding={3}
           textAlign="center"
@@ -321,13 +309,13 @@ export const Home: FC = () => {
             sx={{ m: 1 }}
             onClick={fetchEmission}
           >
-            Calculate the emission
+            Calculate emission
           </Button>
           <Typography
             marginTop={1}
             marginBottom={1}
             variant="h5"
-            padding={3}
+            padding={1}
             textAlign="center"
             color="primary.main"
           >
@@ -341,8 +329,9 @@ export const Home: FC = () => {
             sx={{ m: 1 }}
             onClick={addTrip}
           >
-            Save the result
+            Save result
           </Button>
+          <BarChart />
         </Box>
       </Container>
     </ThemeProvider>
