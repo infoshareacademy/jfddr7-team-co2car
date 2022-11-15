@@ -19,7 +19,7 @@ export const Profile = () => {
             padding={3}
             textAlign="center"
           >
-            Moje dane
+            My Data
           </Typography>
           <Box sx={{ width: 200, height: 100 }}>
             Tu miejsce na tabelkę - fetch z Firebase, też można go zrobic jako
@@ -31,7 +31,7 @@ export const Profile = () => {
             textAlign="center"
             color="primary.main"
           >
-            Wielkośc rocznej emisji dwutlenku węgla z twojego samochodu
+            The amount of your car's annual carbon emission
           </Typography>
           <Box>Miejsce na komponent z wykresem</Box>
         </Box>

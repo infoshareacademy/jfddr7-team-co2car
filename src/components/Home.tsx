@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import {
   Button,
   TextField,
@@ -11,17 +11,28 @@ import {
   Box,
   SelectChangeEvent,
 } from "@mui/material";
-import {
-  DatePicker,
-  LocalizationProvider,
-  // AdapterDayjs,
-} from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
-// import "dayjs/locale/pl";
-// import { pl } from "dayjs/locale";
+import dayjs, { Dayjs } from "dayjs";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
+import { firebaseDb } from "..";
+import { doc, setDoc } from "firebase/firestore";
+import { v4 as uuid } from "uuid";
+import { Context } from "./../ContextProvider";
+import { BarChart } from "./BarChart";
+
+// interface Trip {
+//   emission: number;
+//   date: Date;
+//   owner: string;
+// }
+
+interface Date {
+  day: number;
+  month: number;
+  year: number;
+}
 
 interface SingleCar {
   make: string;
@@ -51,6 +62,9 @@ const emptyCar: SingleCar = {
 };
 
 export const Home: FC = () => {
+  const { username, trip, setTrip, emission, setEmission } =
+    useContext(Context);
+
   const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
 
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
@@ -58,7 +72,6 @@ export const Home: FC = () => {
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
-  const [emission, setEmission] = useState(0);
   const [date, setDate] = useState<Dayjs | null>(null);
 
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
@@ -113,7 +126,7 @@ export const Home: FC = () => {
             },
           }
         );
-        if (!response.ok) throw Error("Did not recieve expected data");
+        if (!response.ok) throw Error("Did not receive expected data");
         const listMakes = await response.json();
         setVehicleMakes(
           listMakes.map((element: ApiCarMake) => ({
@@ -140,7 +153,7 @@ export const Home: FC = () => {
             },
           }
         );
-        if (!response.ok) throw Error("Did not recieve expected data");
+        if (!response.ok) throw Error("Did not receive expected data");
         const listModels = await response.json();
         setVehicleModels(
           listModels
@@ -186,7 +199,7 @@ export const Home: FC = () => {
           }),
         }
       );
-      if (!response.ok) throw Error("Did not recieve expected data");
+      if (!response.ok) throw Error("Did not receive expected data");
       const object = await response.json();
       const currentEmission = object.data.attributes.carbon_kg;
       console.log(currentEmission);
@@ -196,38 +209,33 @@ export const Home: FC = () => {
     }
   };
 
-  // const addSong = async (): Promise<void> => {
-  //   if (newSong) {
-  //     try {
-  //       const songId = uuid();
-  //       await setDoc(doc(firebaseDb, "Songs", songId), {
-  //         name: newSong,
-  //         owner: username,
-  //       });
-  //       const updatedSongs = [...songs, newSong];
-  //       setSongs(updatedSongs);
-  //       if (inputRef.current) {
-  //         inputRef.current.value = "";
-  //       }
-  //       setNewSong("");
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
+  const addTrip = async (): Promise<void> => {
+    if (trip) {
+      try {
+        const tripId = uuid();
+        await setDoc(doc(firebaseDb, "Trips", tripId), {
+          emission: emission,
+          date: dayjs(date, "MM/DD/YYYY").format("MM/DD/YYYY"),
+          owner: username,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
         <Typography
-          marginTop={5}
-          marginBottom={5}
+          marginTop={1}
+          marginBottom={1}
           variant="h5"
           padding={3}
           textAlign="center"
           color="primary.main"
         >
-          Oblicz emisję dwutlenku węgla swojego samochodu
+          Calculate your car's carbon emission
         </Typography>
         <Box
           display={"flex"}
@@ -239,18 +247,18 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <TextField
               id="dystans"
-              label="Dystans (km)"
+              label="Distance (km)"
               type="number"
               onChange={(e) => handleDistance(e)}
             ></TextField>
           </FormControl>
 
           <FormControl sx={{ minWidth: 300, m: 1 }}>
-            <InputLabel id="marka">Marka</InputLabel>
+            <InputLabel id="marka">Brand</InputLabel>
             <Select
               labelId="marka"
               id="marka"
-              label="Marka"
+              label="Brand"
               defaultValue=""
               value={chosenMake}
               onChange={(e) => handleChangeMake(e)}
@@ -285,16 +293,11 @@ export const Home: FC = () => {
           </FormControl>
 
           <FormControl sx={{ minWidth: 300, m: 1 }}>
-            <LocalizationProvider
-              dateAdapter={AdapterDayjs}
-              // locale={pl}
-            >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Data"
+                label="Date"
                 value={date}
-                onChange={(newDate) => {
-                  setDate(newDate);
-                }}
+                onChange={setDate}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -306,13 +309,13 @@ export const Home: FC = () => {
             sx={{ m: 1 }}
             onClick={fetchEmission}
           >
-            Oblicz emisję
+            Calculate emission
           </Button>
           <Typography
             marginTop={1}
             marginBottom={1}
             variant="h5"
-            padding={3}
+            padding={1}
             textAlign="center"
             color="primary.main"
           >
@@ -320,9 +323,15 @@ export const Home: FC = () => {
           </Typography>
 
           {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
-          <Button variant="contained" color="primary" sx={{ m: 1 }}>
-            Zapisz wynik
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={addTrip}
+          >
+            Save result
           </Button>
+          <BarChart />
         </Box>
       </Container>
     </ThemeProvider>

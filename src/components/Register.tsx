@@ -50,21 +50,21 @@ export const Register = () => {
         navigate("/signin");
       } catch ({ code, message }) {
         if (code === WEAK_PASSWORD_ERROR) {
-          setError("Hasło musi mieć przynajmniej 6 znaków długości.");
+          setError("Your password need to contain at least 6 characters.");
           setTimeout(() => {
             setError("");
           }, 5000);
           return;
         }
         if (code === INVALID_EMAIL_ERROR) {
-          setError("Niepoprawny adres e-mail.");
+          setError("Incorrect email address");
           setTimeout(() => {
             setError("");
           }, 5000);
           return;
         }
         if (code === USER_ALREADY_EXISTS_ERROR) {
-          setError("Konto na podany adres e-mail już istnieje.");
+          setError("An account with this email already exists.");
           setTimeout(() => {
             setError("");
           }, 5000);
@@ -72,7 +72,7 @@ export const Register = () => {
         }
       }
     } else {
-      setError("Podane hasła nie są takie same.");
+      setError("These passwords are different.");
       setTimeout(() => {
         setError("");
       }, 5000);
@@ -91,7 +91,7 @@ export const Register = () => {
             color="primary.main"
             marginTop={5}
           >
-            Proszę zarejestruj się, żeby korzystać z aplikacji
+            Sign up to use the app
           </Typography>
           <form>
             <Box
@@ -104,18 +104,18 @@ export const Register = () => {
               padding={3}
               borderRadius={5}
               // boxShadow={5, 5, 10 #ccc}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-              }}
+              // sx={{
+              //   ":hover": {
+              //     boxShadow: "10px 10px 20px #ccc",
+              //   },
+              // }}
             >
               <TextField
                 onChange={(event) => setRegisterEmail(event.target.value)}
                 margin="normal"
                 type={"email"}
                 variant="outlined"
-                placeholder="wpisz swój email"
+                placeholder="enter your email"
                 label="E-mail"
               />
               <TextField
@@ -123,8 +123,8 @@ export const Register = () => {
                 margin="normal"
                 type={"password"}
                 variant="outlined"
-                placeholder="wpisz swóje hasło"
-                label="Hasło"
+                placeholder="enter new password"
+                label="Password"
               />
 
               {/* wprowadzam nowego inputa do powtórzenia hasła
@@ -134,8 +134,8 @@ export const Register = () => {
                 margin="normal"
                 type={"password"}
                 variant="outlined"
-                placeholder="powtórz swóje hasło"
-                label="Powtórzone hasło"
+                placeholder="repeat the password"
+                label="Repeated password"
               />
 
               <Typography sx={{ height: 20, color: "secondary.main" }}>
@@ -147,7 +147,7 @@ export const Register = () => {
                 sx={{ marginTop: 3, borderRadius: 3 }}
                 variant="contained"
               >
-                Zarejestruj
+                Sign up
               </Button>
               <p>
                 <Button
@@ -155,7 +155,7 @@ export const Register = () => {
                     navigate("/login");
                   }}
                 >
-                  Masz konto? Przejdź do logowania
+                  Already have an account? Go to login
                 </Button>
               </p>
             </Box>

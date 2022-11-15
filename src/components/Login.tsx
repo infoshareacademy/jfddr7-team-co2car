@@ -27,7 +27,7 @@ export const Login = () => {
       navigate("/home");
     } catch ({ code, message }) {
       if (code === INVALID_EMAIL_ERROR) {
-        setError("Niepoprawny adres e-mail.");
+        setError("Incorrect email address");
         setTimeout(() => {
           setError("");
         }, 5000);
@@ -47,7 +47,7 @@ export const Login = () => {
             textAlign="center"
             marginTop={5}
           >
-            Zaloguj się, aby korzystać z aplikacji
+            Sign in to use the app
           </Typography>
           <form>
             <Box
@@ -59,19 +59,13 @@ export const Login = () => {
               margin={"auto"}
               padding={3}
               borderRadius={5}
-              // boxShadow={5, 5, 10 #ccc}
-              sx={{
-                ":hover": {
-                  boxShadow: "10px 10px 20px #ccc",
-                },
-              }}
             >
               <TextField
                 onChange={(event) => setLogin(event.target.value)}
                 margin="normal"
                 type={"email"}
                 variant="outlined"
-                placeholder="wpisz swój email"
+                placeholder="enter your email"
                 label="E-mail"
               />
               <TextField
@@ -79,8 +73,8 @@ export const Login = () => {
                 margin="normal"
                 type={"password"}
                 variant="outlined"
-                placeholder="wpisz swóje hasło"
-                label="Hasło"
+                placeholder="enter your password"
+                label="Password"
               />
               <Typography sx={{ height: 20, color: "secondary.main" }}>
                 {error}
@@ -90,7 +84,7 @@ export const Login = () => {
                 sx={{ marginTop: 3, borderRadius: 3 }}
                 variant="contained"
               >
-                Zaloguj
+                Sign in
               </Button>
               <p>
                 <Button
@@ -98,7 +92,7 @@ export const Login = () => {
                     navigate("/register");
                   }}
                 >
-                  Nie masz konta? Przejdź do rejestracji
+                  You don't have an account? Go to registration
                 </Button>
               </p>
             </Box>
