@@ -74,19 +74,18 @@ export const BarChart = () => {
 
   return (
     <>
-      {/* <ThemeProvider theme={theme}> */}
-      <div style={{ width: "650px", margin: "auto auto" }}>
+      <div style={{ width: "50vw", margin: "auto auto", marginBottom: "2em" }}>
         <Bar options={options} data={data} />
         <Link
-          href="https://co2.myclimate.org/en/portfolios?calculation_id=5239733"
+          href="https://www.myclimate.org/"
           target="blank"
-          color="inherit"
+          color="#babdbe"
           fontSize={10}
+          underline="hover"
         >
-          * Source ofdata
+          * Source of data
         </Link>
       </div>
-      {/* </ThemeProvider> */}
     </>
   );
 };

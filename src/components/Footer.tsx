@@ -29,6 +29,7 @@ export const Footer: FC = () => {
               target="blank"
               color="inherit"
               marginLeft={1}
+              underline="hover"
             >
               Grzegorz Uberman
             </Link>
@@ -40,6 +41,7 @@ export const Footer: FC = () => {
               target="blank"
               color="inherit"
               marginLeft={1}
+              underline="hover"
             >
               Tomasz Stenka
             </Link>
@@ -51,6 +53,7 @@ export const Footer: FC = () => {
               target="blank"
               color="inherit"
               marginLeft={1}
+              underline="hover"
             >
               Monika Hilbrycht
             </Link>
@@ -58,10 +61,11 @@ export const Footer: FC = () => {
 
           <Typography fontSize={10}>
             <Link
-              href="https://github.com/dordawi?tab=repositories"
+              href="https://github.com/dordawi"
               target="blank"
               color="inherit"
               marginLeft={1}
+              underline="hover"
             >
               Dorota Dawidowicz
             </Link>
