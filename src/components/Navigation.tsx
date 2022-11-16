@@ -11,7 +11,7 @@ export const Navigation: FC = () => {
 
   const handleLogOut = async (): Promise<void> => {
     await signOut(firebaseAuth);
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -46,6 +46,18 @@ export const Navigation: FC = () => {
               }}
             >
               Sign Out
+            </Button>
+          </Stack>
+        )}
+        {!username && (
+          <Stack direction="row" spacing={2}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Sign In
             </Button>
           </Stack>
         )}

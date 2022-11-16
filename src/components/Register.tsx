@@ -38,7 +38,19 @@ export const Register = () => {
   const onRegister = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    if (registerPassword === repeatedPassword) {
+    if (registerPassword !== repeatedPassword) {
+      setError("These passwords are different.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+      return;
+    } else if (!(registerPassword && repeatedPassword && registerEmail)) {
+      setError("All fields are required.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+      return;
+    } else {
       try {
         await createUserWithEmailAndPassword(
           auth,
@@ -71,12 +83,6 @@ export const Register = () => {
           return;
         }
       }
-    } else {
-      setError("These passwords are different.");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-      return;
     }
   };
 

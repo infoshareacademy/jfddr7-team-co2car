@@ -11,6 +11,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth, firebaseDb } from "./index";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./components/styles/Styles";
+import { Footer } from "./components/Footer";
 
 export const App: FC = () => {
   const navigate = useNavigate();
@@ -40,11 +41,13 @@ export const App: FC = () => {
       <ThemeProvider theme={theme}>
         <Navigation />
         <Routes>
+          <Route path="/" element={<Login />}></Route>
+          <Route path="/login" element={<Login />}></Route>
           <Route path="/home" element={<Home />}></Route>
           <Route path="/register" element={<Register />}></Route>
-          <Route path="/login" element={<Login />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
         </Routes>
+        <Footer />
       </ThemeProvider>
     </>
   );
