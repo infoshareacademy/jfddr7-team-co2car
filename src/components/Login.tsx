@@ -12,6 +12,8 @@ import theme from "./styles/Styles";
 import { StyledLogin } from "./styles/Login.styles";
 
 const INVALID_EMAIL_ERROR = "auth/invalid-email";
+const WRONG_PASSWORD_ERROR = "auth/wrong-password";
+const USER_NOT_FOUND_ERROR = "auth/user-not-found";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -23,19 +25,36 @@ export const Login = () => {
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
+    if (!login || !password) {
+      setError("All fields are required");
+      return;
+    }
     try {
       await signInWithEmailAndPassword(auth, login, password);
       setUsername(login);
       navigate("/home");
     } catch ({ code, message }) {
-      if (code === INVALID_EMAIL_ERROR) {
-        setError("Incorrect email address");
-        setTimeout(() => {
-          setError("");
-        }, 5000);
-        return;
-      }
+      handleFirebaseError(code);
     }
+  };
+
+  const handleFirebaseError = (code: unknown) => {
+    switch (code) {
+      case INVALID_EMAIL_ERROR:
+        setError("Incorrect email address");
+        break;
+      case WRONG_PASSWORD_ERROR:
+        setError("Incorrect email or password");
+        break;
+      case USER_NOT_FOUND_ERROR:
+        setError("Incorrect email or password");
+        break;
+      default:
+        break;
+    }
+    setTimeout(() => {
+      setError("");
+    }, 5000);
   };
 
   return (
