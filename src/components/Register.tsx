@@ -38,46 +38,47 @@ export const Register = () => {
   const onRegister = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    if (registerPassword === repeatedPassword) {
-      try {
-        await createUserWithEmailAndPassword(
-          auth,
-          registerEmail,
-          registerPassword
-        );
-        // await signInWithEmailAndPassword(auth, registerEmail, registerPassword);
-        setUsername(registerEmail);
-        navigate("/signin");
-      } catch ({ code, message }) {
-        if (code === WEAK_PASSWORD_ERROR) {
-          setError("Your password need to contain at least 6 characters.");
-          setTimeout(() => {
-            setError("");
-          }, 5000);
-          return;
-        }
-        if (code === INVALID_EMAIL_ERROR) {
-          setError("Incorrect email address");
-          setTimeout(() => {
-            setError("");
-          }, 5000);
-          return;
-        }
-        if (code === USER_ALREADY_EXISTS_ERROR) {
-          setError("An account with this email already exists.");
-          setTimeout(() => {
-            setError("");
-          }, 5000);
-          return;
-        }
-      }
-    } else {
-      setError("These passwords are different.");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
+    if (registerPassword !== repeatedPassword) {
+      setError("These passwords are different");
       return;
     }
+    if (!registerPassword || !repeatedPassword || !registerEmail) {
+      setError("All fields are required");
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      setUsername(registerEmail);
+      navigate("/signin");
+    } catch ({ code, message }) {
+      handleFirebaseError(code);
+    }
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  };
+
+  const handleFirebaseError = (code: unknown) => {
+    switch (code) {
+      case WEAK_PASSWORD_ERROR:
+        setError("Your password need to contain at least 6 characters");
+        break;
+      case INVALID_EMAIL_ERROR:
+        setError("Incorrect email address");
+        break;
+      case USER_ALREADY_EXISTS_ERROR:
+        setError("An account with this email already exists");
+        break;
+      default:
+        break;
+    }
+    setTimeout(() => {
+      setError("");
+    }, 5000);
   };
 
   return (
@@ -103,12 +104,6 @@ export const Register = () => {
               margin={"auto"}
               padding={3}
               borderRadius={5}
-              // boxShadow={5, 5, 10 #ccc}
-              // sx={{
-              //   ":hover": {
-              //     boxShadow: "10px 10px 20px #ccc",
-              //   },
-              // }}
             >
               <TextField
                 onChange={(event) => setRegisterEmail(event.target.value)}
@@ -144,7 +139,7 @@ export const Register = () => {
 
               <Button
                 onClick={onRegister}
-                sx={{ marginTop: 3, borderRadius: 3 }}
+                sx={{ marginTop: 3 }}
                 variant="contained"
               >
                 Sign up

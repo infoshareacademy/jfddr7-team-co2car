@@ -74,6 +74,12 @@ export const Home: FC = () => {
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState<Dayjs | null>(null);
 
+  useEffect(() => {
+    return () => {
+      setEmission(0);
+    };
+  }, []);
+
   const handleChangeMake = (e: SelectChangeEvent<string>) => {
     setChosenMake(e.target.value);
   };
@@ -252,7 +258,6 @@ export const Home: FC = () => {
               onChange={(e) => handleDistance(e)}
             ></TextField>
           </FormControl>
-
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <InputLabel id="marka">Brand</InputLabel>
             <Select
@@ -272,7 +277,6 @@ export const Home: FC = () => {
               ))}
             </Select>
           </FormControl>
-
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <InputLabel id="model">Model</InputLabel>
             <Select
@@ -291,7 +295,6 @@ export const Home: FC = () => {
               ))}
             </Select>
           </FormControl>
-
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -302,7 +305,6 @@ export const Home: FC = () => {
               />
             </LocalizationProvider>
           </FormControl>
-
           <Button
             variant="contained"
             color="primary"
@@ -313,7 +315,7 @@ export const Home: FC = () => {
           </Button>
           <Typography
             marginTop={1}
-            marginBottom={1}
+            marginBottom={0}
             variant="h5"
             padding={1}
             textAlign="center"
@@ -321,17 +323,17 @@ export const Home: FC = () => {
           >
             {emission} kg
           </Typography>
-
-          {/* <Wykres/> tutaj później włożyc komponent z wykresem*/}
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ m: 1 }}
-            onClick={addTrip}
-          >
-            Save result
-          </Button>
           <BarChart />
+          {!!username && (
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ m: 1, marginBottom: 5 }}
+              onClick={addTrip}
+            >
+              Save result
+            </Button>
+          )}
         </Box>
       </Container>
     </ThemeProvider>
