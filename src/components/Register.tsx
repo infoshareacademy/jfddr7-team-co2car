@@ -99,7 +99,7 @@ export const Register = () => {
 
   return (
     <Wrapper>
-      <Navigation />
+      <Navigation variant={"login"}/>
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>

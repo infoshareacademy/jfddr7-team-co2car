@@ -86,7 +86,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Navigation loginNavigation={true}/>
+      <Navigation variant={"login"}/>
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
