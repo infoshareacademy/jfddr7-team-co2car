@@ -8,4 +8,16 @@ export const Wrapper = styled.div`
   .mainContent {
     flex-grow: 1;
   }
+
+  @media screen and (max-width: 768px) {
+    .bigScreenOnly {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    .smallScreenOnly {
+      display: none;
+    }
+  }
 `;

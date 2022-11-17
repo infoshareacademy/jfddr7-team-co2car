@@ -14,12 +14,15 @@ import {
   Typography,
   Button,
   ListItemSecondaryAction,
+  Link as MUILink,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
+import { StyledLogin } from "./styles/Login.styles";
+import { LandingPage } from "./LandingPage";
 
 /*interface RegisterProps {
   registerEmail: string;
@@ -87,27 +90,25 @@ export const Register = () => {
   return (
     <Wrapper>
       <Navigation />
-      <div className="mainContent">
-        <Typography
-          variant="h5"
-          padding={3}
-          textAlign="center"
-          color="primary.main"
-          marginTop={5}
-        >
-          Sign up to use the app
-        </Typography>
+      <StyledLogin className="mainContent">
+        <LandingPage />
         <form>
           <Box
             display={"flex"}
             flexDirection={"column"}
-            maxWidth={400}
             alignItems={"center"}
-            justifyContent={"center"}
-            margin={"auto"}
+            margin={0}
             padding={3}
-            borderRadius={5}
           >
+            <Typography
+              color="primary.main"
+              variant="h5"
+              padding={3}
+              textAlign="center"
+              marginTop={2}
+            >
+              Sign up to use the app
+            </Typography>
             <TextField
               onChange={(event) => setRegisterEmail(event.target.value)}
               margin="normal"
@@ -121,12 +122,9 @@ export const Register = () => {
               margin="normal"
               type={"password"}
               variant="outlined"
-              placeholder="enter new password"
+              placeholder="enter your password"
               label="Password"
             />
-
-            {/* wprowadzam nowego inputa do powtórzenia hasła
-             */}
             <TextField
               onChange={(event) => setRepeatedPassword(event.target.value)}
               margin="normal"
@@ -135,11 +133,9 @@ export const Register = () => {
               placeholder="repeat the password"
               label="Repeated password"
             />
-
             <Typography sx={{ height: 20, color: "secondary.main" }}>
               {error}
             </Typography>
-
             <Button
               onClick={onRegister}
               sx={{ marginTop: 3 }}
@@ -153,12 +149,14 @@ export const Register = () => {
                   navigate("/login");
                 }}
               >
-                Already have an account? Go to login
+                Already have an account?
+                <br />
+                Go to login
               </Button>
             </p>
           </Box>
         </form>
-      </div>
+      </StyledLogin>
       <Footer />
     </Wrapper>
   );

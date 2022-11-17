@@ -1,11 +1,11 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useRef } from "react";
 import { AppBar, Toolbar, Typography, Stack, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Context } from "./../ContextProvider";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "..";
 
-export const Navigation: FC = () => {
+export const Navigation = () => {
   const navigate = useNavigate();
   const { username } = useContext(Context);
 
@@ -50,11 +50,11 @@ export const Navigation: FC = () => {
           </Stack>
         )}
         {!username && (
-          <Stack direction="row" spacing={2}>
+          <Stack className="smallScreenOnly" direction="row" spacing={2}>
             <Button
               color="inherit"
               onClick={() => {
-                navigate("/");
+                navigate("/login");
               }}
             >
               Sign In

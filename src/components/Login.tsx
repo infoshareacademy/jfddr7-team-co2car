@@ -1,22 +1,45 @@
-// import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Box, TextField, Typography, Button } from "@mui/material";
-import { Link as MUILink } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Link as MUILink,
+} from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
 import { StyledLogin } from "./styles/Login.styles";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
+import { LandingPage } from "./LandingPage";
 
 const INVALID_EMAIL_ERROR = "auth/invalid-email";
 const WRONG_PASSWORD_ERROR = "auth/wrong-password";
 const USER_NOT_FOUND_ERROR = "auth/user-not-found";
+
+interface ErrorProps {
+  email: {
+    error: boolean;
+  };
+  password: {
+    error: boolean;
+  };
+}
+
+const noErrors: ErrorProps = {
+  email: {
+    error: false,
+  },
+  password: {
+    error: false,
+  },
+};
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -25,11 +48,26 @@ export const Login = () => {
   const { setUsername } = useContext(Context);
   const [error, setError] = useState("");
 
+  const [errorProps, setErrorProps] = useState<ErrorProps>(noErrors);
+  // const [passwordErrorProps, setPasswordErrorProps] = useState<ErrorProps>(noErrors);
+
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    if (!login || !password) {
+    if (!login) {
       setError("All fields are required");
+      setErrorProps({
+        email: { error: true },
+        password: { error: false },
+      });
+      return;
+    }
+    if (!password) {
+      setError("All fields are required");
+      setErrorProps({
+        email: { error: false },
+        password: { error: true },
+      });
       return;
     }
     try {
@@ -39,24 +77,43 @@ export const Login = () => {
     } catch ({ code, message }) {
       handleFirebaseError(code);
     }
+
+    // przesunąć to gdzieś indziej, gdzie będzie działać ;)
+    setTimeout(() => {
+      setError("");
+      setErrorProps(noErrors);
+    }, 5000);
   };
 
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
-        setError("Incorrect email address");
+        setError("Incorrect email format");
+        setErrorProps({
+          email: { error: true },
+          password: { error: false },
+        });
         break;
       case WRONG_PASSWORD_ERROR:
         setError("Incorrect email or password");
+        setErrorProps({
+          email: { error: true },
+          password: { error: true },
+        });
         break;
       case USER_NOT_FOUND_ERROR:
         setError("Incorrect email or password");
+        setErrorProps({
+          email: { error: true },
+          password: { error: true },
+        });
         break;
       default:
         break;
     }
     setTimeout(() => {
       setError("");
+      setErrorProps(noErrors);
     }, 5000);
   };
 
@@ -64,75 +121,28 @@ export const Login = () => {
     <Wrapper>
       <Navigation />
       <StyledLogin className="mainContent">
-        <Box
-          maxWidth={600}
-          padding={5}
-          paddingTop={0}
-          paddingBottom={0}
-          marginTop={0}
-          marginBottom={0}
-        >
-          <Typography
-            color="primary.contrastText"
-            variant="h4"
-            padding={5}
-            marginTop={2}
-          >
-            Reaching 100% CO₂ emission reduction target for both new cars and
-            vans by 2035 is possible.
-          </Typography>
-          <Typography color="primary.contrastText" padding={3} marginTop={2}>
-            The Council and the European Parliament reached a provisional
-            agreement on stricter CO₂ emission performance standards for new
-            cars and vans. Pending a formal adoption, the co-legislators agreed
-            to a 55% CO₂ emission reduction target for new cars and 50% for new
-            vans by 2030 compared to 2021 levels and to a 100% CO₂ emission
-            reduction target for both new cars and vans by 2035.{" "}
-            <MUILink
-              href="https://www.consilium.europa.eu/en/infographics/fit-for-55-emissions-cars-and-vans/"
-              target="blank"
-              color="inherit"
-            >
-              Learn more
-            </MUILink>
-          </Typography>
-          <Typography
-            color="primary.contrastText"
-            variant="h5"
-            padding={3}
-            marginTop={2}
-            marginBottom={7}
-          >
-            Use CO₂CAR to check the emission levels for your current or next
-            car!
-          </Typography>
-        </Box>
+        <LandingPage />
         <form>
           <Box
             display={"flex"}
             flexDirection={"column"}
-            maxWidth={400}
             alignItems={"center"}
-            justifyContent={"center"}
-            margin={"auto"}
+            margin={0}
             padding={3}
-            bgcolor={"#fff"}
-            paddingTop={0}
-            paddingBottom={0}
-            marginTop={0}
-            marginBottom={0}
-            style={{ minHeight: "calc(100vh - 5em)" }}
           >
             <Typography
               color="primary.main"
               variant="h5"
-              padding={3}
               textAlign="center"
-              marginTop={2}
+              marginTop={5}
             >
               CO₂Car
             </Typography>
+            <Typography color="primary.main" paddingBottom={2}>
+              Sign in and check your car's emissions!
+            </Typography>
             <TextField
+              {...errorProps.email}
               onChange={(event) => setLogin(event.target.value)}
               margin="normal"
               type={"email"}
@@ -141,6 +151,7 @@ export const Login = () => {
               label="E-mail"
             />
             <TextField
+              {...errorProps.password}
               onChange={(event) => setPassword(event.target.value)}
               margin="normal"
               type={"password"}
@@ -160,7 +171,9 @@ export const Login = () => {
                   navigate("/register");
                 }}
               >
-                You don't have an account? Go to registration
+                Don't have an account yet?
+                <br />
+                Go to registration instead.
               </Button>
             </p>
             <Button
@@ -170,7 +183,7 @@ export const Login = () => {
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue without signing in
+              Continue without signing&nbsp;in
             </Button>
           </Box>
         </form>
