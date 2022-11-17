@@ -5,7 +5,11 @@ import { Context } from "./../ContextProvider";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "..";
 
-export const Navigation = () => {
+interface NavigationProps {
+  loginNavigation?: boolean;
+}
+
+export const Navigation = ({ loginNavigation }: NavigationProps) => {
   const navigate = useNavigate();
   const { username } = useContext(Context);
 
@@ -49,7 +53,21 @@ export const Navigation = () => {
             </Button>
           </Stack>
         )}
-        {!username && (
+        {!username && loginNavigation && (
+          <Stack
+          className="smallScreenOnly"
+          direction="row" spacing={2}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Sign In
+            </Button>
+          </Stack>
+        )}
+          {!username && !loginNavigation && (
           <Stack
           // className="smallScreenOnly"
           direction="row" spacing={2}>
@@ -63,6 +81,7 @@ export const Navigation = () => {
             </Button>
           </Stack>
         )}
+                
       </Toolbar>
     </AppBar>
   );
