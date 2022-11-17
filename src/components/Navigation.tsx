@@ -50,7 +50,9 @@ export const Navigation = () => {
           </Stack>
         )}
         {!username && (
-          <Stack className="smallScreenOnly" direction="row" spacing={2}>
+          <Stack
+          // className="smallScreenOnly"
+          direction="row" spacing={2}>
             <Button
               color="inherit"
               onClick={() => {
