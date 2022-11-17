@@ -10,12 +10,11 @@ import {
   Typography,
   Box,
   SelectChangeEvent,
+  Tooltip
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./styles/Styles";
 import { firebaseDb } from "..";
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
@@ -328,6 +327,21 @@ export const Home: FC = () => {
             >
               Save result
             </Button>
+          )}
+          {!username && (
+            <Tooltip title="Sign in to use this feature" placement="bottom-start" arrow>
+              <div>
+              <Button
+                disabled
+                variant="contained"
+                color="primary"
+                sx={{ marginBottom: 7 }}
+                onClick={addTrip}
+              >
+                Save result
+              </Button>
+              </div>
+            </Tooltip>
           )}
         </Box>
       </Container>

@@ -1,11 +1,15 @@
-import { FC, useContext, useRef } from "react";
+import { FC, useContext, useRef, useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, Stack, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Context } from "./../ContextProvider";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "..";
 
-export const Navigation = () => {
+interface NavigationProps {
+  variant?: string;
+}
+
+export const Navigation = ({ variant }: NavigationProps) => {
   const navigate = useNavigate();
   const { username } = useContext(Context);
 
@@ -14,13 +18,20 @@ export const Navigation = () => {
     navigate("/");
   };
 
+  const [loginSmallScreen, setLoginSmallScreen] = useState({})
+
+  useEffect((): void => {
+    if (variant === "login") {
+      setLoginSmallScreen({className: "smallScreenOnly"});
+    }
+  }, []);
+
   return (
     <AppBar position="static">
       <Toolbar sx={{ flexBasis: "100%" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CO₂CAR
         </Typography>
-        {/* <Typography sx={{ flexGrow: 1 }}>{username}</Typography> */}
         {!!username && (
           <Stack direction="row" spacing={2}>
             <Button
@@ -50,7 +61,9 @@ export const Navigation = () => {
           </Stack>
         )}
         {!username && (
-          <Stack className="smallScreenOnly" direction="row" spacing={2}>
+          <Stack
+          {...loginSmallScreen}
+          direction="row" spacing={2}>
             <Button
               color="inherit"
               onClick={() => {
