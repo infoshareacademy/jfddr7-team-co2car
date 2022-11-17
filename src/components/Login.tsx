@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
@@ -11,8 +10,6 @@ import {
   Button,
   Link as MUILink,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./styles/Styles";
 import { StyledLogin } from "./styles/Login.styles";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
@@ -24,21 +21,11 @@ const WRONG_PASSWORD_ERROR = "auth/wrong-password";
 const USER_NOT_FOUND_ERROR = "auth/user-not-found";
 
 interface ErrorProps {
-  email: {
-    error: boolean;
-  };
-  password: {
-    error: boolean;
-  };
+  error: boolean;
 }
 
 const noErrors: ErrorProps = {
-  email: {
-    error: false,
-  },
-  password: {
-    error: false,
-  },
+  error: false,
 };
 
 export const Login = () => {
@@ -46,28 +33,26 @@ export const Login = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const { setUsername } = useContext(Context);
-  const [error, setError] = useState("");
-
-  const [errorProps, setErrorProps] = useState<ErrorProps>(noErrors);
-  // const [passwordErrorProps, setPasswordErrorProps] = useState<ErrorProps>(noErrors);
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState(noErrors);
+  const [passwordError, setPasswordError] = useState(noErrors);
+  
+  const clearErrors = () => {
+    setTimeout(() => {
+      setErrorMessage("");
+      setEmailError(noErrors);
+      setPasswordError(noErrors);
+    }, 5000);
+  }
+  
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    if (!login) {
-      setError("All fields are required");
-      setErrorProps({
-        email: { error: true },
-        password: { error: false },
-      });
-      return;
-    }
-    if (!password) {
-      setError("All fields are required");
-      setErrorProps({
-        email: { error: false },
-        password: { error: true },
-      });
+    if (!login || !password) {
+      setErrorMessage("All fields are required");
+      setEmailError({error: true});
+      setPasswordError({error: true});
+      clearErrors();
       return;
     }
     try {
@@ -77,44 +62,26 @@ export const Login = () => {
     } catch ({ code, message }) {
       handleFirebaseError(code);
     }
-
-    // przesunąć to gdzieś indziej, gdzie będzie działać ;)
-    setTimeout(() => {
-      setError("");
-      setErrorProps(noErrors);
-    }, 5000);
   };
 
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
-        setError("Incorrect email format");
-        setErrorProps({
-          email: { error: true },
-          password: { error: false },
-        });
+        setErrorMessage("Incorrect email format");
+        setEmailError({error: true});
         break;
       case WRONG_PASSWORD_ERROR:
-        setError("Incorrect email or password");
-        setErrorProps({
-          email: { error: true },
-          password: { error: true },
-        });
+        setErrorMessage("Incorrect password");
+        setPasswordError({error: true});
         break;
       case USER_NOT_FOUND_ERROR:
-        setError("Incorrect email or password");
-        setErrorProps({
-          email: { error: true },
-          password: { error: true },
-        });
+        setErrorMessage("Email not yet registered");
+        setEmailError({error: true});
         break;
       default:
         break;
     }
-    setTimeout(() => {
-      setError("");
-      setErrorProps(noErrors);
-    }, 5000);
+    clearErrors();
   };
 
   return (
@@ -142,7 +109,7 @@ export const Login = () => {
               Sign in and check your car's emissions!
             </Typography>
             <TextField
-              {...errorProps.email}
+              {...emailError}
               onChange={(event) => setLogin(event.target.value)}
               margin="normal"
               type={"email"}
@@ -151,7 +118,7 @@ export const Login = () => {
               label="E-mail"
             />
             <TextField
-              {...errorProps.password}
+              {...passwordError}
               onChange={(event) => setPassword(event.target.value)}
               margin="normal"
               type={"password"}
@@ -159,13 +126,16 @@ export const Login = () => {
               placeholder="enter your password"
               label="Password"
             />
-            <Typography sx={{ height: 20, color: "secondary.main" }}>
-              {error}
-            </Typography>
-            <Button onClick={onLogin} sx={{ marginTop: 3 }} variant="contained">
+            <Button onClick={onLogin} sx={{ margin: 2 }} variant="contained">
               Sign in
             </Button>
-            <p>
+            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F"}}>
+              {errorMessage}
+            </Typography>
+            <Box
+              margin="normal"
+              sx={{height: "80px"}}
+            />
               <Button
                 onClick={() => {
                   navigate("/register");
@@ -175,7 +145,6 @@ export const Login = () => {
                 <br />
                 Go to registration instead.
               </Button>
-            </p>
             <Button
               onClick={() => {
                 navigate("/home");
@@ -183,7 +152,7 @@ export const Login = () => {
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue without signing&nbsp;in
+              Continue <br />without signing&nbsp;in
             </Button>
           </Box>
         </form>
