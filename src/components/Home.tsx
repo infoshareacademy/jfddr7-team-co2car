@@ -21,12 +21,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import { Context } from "./../ContextProvider";
 import { BarChart } from "./BarChart";
-
-// interface Trip {
-//   emission: number;
-//   date: Date;
-//   owner: string;
-// }
+import { Wrapper } from "./styles/Wrapper.styles";
+import { Navigation } from "./Navigation";
+import { Footer } from "./Footer";
 
 interface Date {
   day: number;
@@ -185,8 +182,6 @@ export const Home: FC = () => {
   }, [chosenMake]);
 
   const fetchEmission = async () => {
-    console.log(distance);
-    console.log(chosenModel);
     try {
       const response = await fetch(
         "https://www.carboninterface.com/api/v1/estimates",
@@ -208,7 +203,6 @@ export const Home: FC = () => {
       if (!response.ok) throw Error("Did not receive expected data");
       const object = await response.json();
       const currentEmission = object.data.attributes.carbon_kg;
-      console.log(currentEmission);
       setEmission(currentEmission);
     } catch (error) {
       console.log(error);
@@ -231,8 +225,9 @@ export const Home: FC = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
+    <Wrapper>
+      <Navigation />
+      <Container className="mainContent" maxWidth="md">
         <Typography
           marginTop={1}
           marginBottom={1}
@@ -336,6 +331,7 @@ export const Home: FC = () => {
           )}
         </Box>
       </Container>
-    </ThemeProvider>
+      <Footer />
+    </Wrapper>
   );
 };

@@ -17,6 +17,9 @@ import {
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
+import { Wrapper } from "./styles/Wrapper.styles";
+import { Navigation } from "./Navigation";
+import { Footer } from "./Footer";
 
 /*interface RegisterProps {
   registerEmail: string;
@@ -82,81 +85,81 @@ export const Register = () => {
   };
 
   return (
-    <>
-      <div>
-        <ThemeProvider theme={theme}>
-          <Typography
-            variant="h5"
+    <Wrapper>
+      <Navigation />
+      <div className="mainContent">
+        <Typography
+          variant="h5"
+          padding={3}
+          textAlign="center"
+          color="primary.main"
+          marginTop={5}
+        >
+          Sign up to use the app
+        </Typography>
+        <form>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            maxWidth={400}
+            alignItems={"center"}
+            justifyContent={"center"}
+            margin={"auto"}
             padding={3}
-            textAlign="center"
-            color="primary.main"
-            marginTop={5}
+            borderRadius={5}
           >
-            Sign up to use the app
-          </Typography>
-          <form>
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              maxWidth={400}
-              alignItems={"center"}
-              justifyContent={"center"}
-              margin={"auto"}
-              padding={3}
-              borderRadius={5}
+            <TextField
+              onChange={(event) => setRegisterEmail(event.target.value)}
+              margin="normal"
+              type={"email"}
+              variant="outlined"
+              placeholder="enter your email"
+              label="E-mail"
+            />
+            <TextField
+              onChange={(event) => setRegisterPassword(event.target.value)}
+              margin="normal"
+              type={"password"}
+              variant="outlined"
+              placeholder="enter new password"
+              label="Password"
+            />
+
+            {/* wprowadzam nowego inputa do powtórzenia hasła
+             */}
+            <TextField
+              onChange={(event) => setRepeatedPassword(event.target.value)}
+              margin="normal"
+              type={"password"}
+              variant="outlined"
+              placeholder="repeat the password"
+              label="Repeated password"
+            />
+
+            <Typography sx={{ height: 20, color: "secondary.main" }}>
+              {error}
+            </Typography>
+
+            <Button
+              onClick={onRegister}
+              sx={{ marginTop: 3 }}
+              variant="contained"
             >
-              <TextField
-                onChange={(event) => setRegisterEmail(event.target.value)}
-                margin="normal"
-                type={"email"}
-                variant="outlined"
-                placeholder="enter your email"
-                label="E-mail"
-              />
-              <TextField
-                onChange={(event) => setRegisterPassword(event.target.value)}
-                margin="normal"
-                type={"password"}
-                variant="outlined"
-                placeholder="enter new password"
-                label="Password"
-              />
-
-              {/* wprowadzam nowego inputa do powtórzenia hasła
-               */}
-              <TextField
-                onChange={(event) => setRepeatedPassword(event.target.value)}
-                margin="normal"
-                type={"password"}
-                variant="outlined"
-                placeholder="repeat the password"
-                label="Repeated password"
-              />
-
-              <Typography sx={{ height: 20, color: "secondary.main" }}>
-                {error}
-              </Typography>
-
+              Sign up
+            </Button>
+            <p>
               <Button
-                onClick={onRegister}
-                sx={{ marginTop: 3 }}
-                variant="contained"
+                onClick={() => {
+                  navigate("/login");
+                }}
               >
-                Sign up
+                Already have an account? Go to login
               </Button>
-              <p>
-                <Button
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Already have an account? Go to login
-                </Button>
-              </p>
-            </Box>
-          </form>
-        </ThemeProvider>
+            </p>
+          </Box>
+        </form>
       </div>
-    </>
+      <Footer />
+    </Wrapper>
   );
 };

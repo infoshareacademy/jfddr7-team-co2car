@@ -7,23 +7,28 @@ export const Footer: FC = () => {
   return (
     <footer>
       <Box
-        bgcolor="primary.light"
+        bgcolor="primary.main"
         color="white"
         display="flex"
         gap="50px"
         margin="0 auto"
         justifyContent="space-between"
         alignItems="center"
-        height="2em"
+        minHeight="1em"
         paddingLeft="2em"
         paddingRight="2em"
       >
         <Stack>
-          <Typography fontSize={10}>&copy; 2022</Typography>
+          <Typography fontSize={10}>&copy;&nbsp;2022</Typography>
         </Stack>
 
-        <Stack direction="row" spacing={2}>
-          <Typography fontSize={10}>
+        <Stack
+          direction="row"
+          spacing={2}
+          flexWrap="wrap"
+          justifyContent="center"
+        >
+          <Typography fontSize={10} textAlign="center">
             <Link
               href="https://github.com/g-uberman"
               target="blank"
@@ -35,7 +40,7 @@ export const Footer: FC = () => {
             </Link>
           </Typography>
 
-          <Typography fontSize={10}>
+          <Typography fontSize={10} textAlign="center">
             <Link
               href="https://github.com/tom-stenka"
               target="blank"
@@ -47,7 +52,7 @@ export const Footer: FC = () => {
             </Link>
           </Typography>
 
-          <Typography fontSize={10}>
+          <Typography fontSize={10} textAlign="center">
             <Link
               href="https://github.com/monika-hilbrycht"
               target="blank"
@@ -59,7 +64,7 @@ export const Footer: FC = () => {
             </Link>
           </Typography>
 
-          <Typography fontSize={10}>
+          <Typography fontSize={10} textAlign="center">
             <Link
               href="https://github.com/dordawi"
               target="blank"

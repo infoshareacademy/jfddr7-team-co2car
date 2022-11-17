@@ -39,7 +39,6 @@ export const App: FC = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Navigation />
         <Routes>
           <Route path="/" element={<Login />}></Route>
           <Route path="/login" element={<Login />}></Route>
@@ -47,7 +46,6 @@ export const App: FC = () => {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
         </Routes>
-        <Footer />
       </ThemeProvider>
     </>
   );

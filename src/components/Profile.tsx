@@ -1,10 +1,33 @@
 import { Container, Typography, Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
+import {useEffect} from "react"
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firebaseDb } from "..";
+import { Wrapper } from "./styles/Wrapper.styles";
+import { Navigation } from "./Navigation";
+import { Footer } from "./Footer";
+
 
 export const Profile = () => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const q = query(collection(firebaseDb, "data"), where("owner", "==", co?email????));
+const myData = await getDocs(q)
+myData.forEach(()=>{
+
+})
+      }
+    };
+    fetchData();
+  }, []);
+
+
   return (
-    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <Navigation />
       <Container maxWidth="md">
         <Box
           display={"flex"}
@@ -36,7 +59,8 @@ export const Profile = () => {
           <Box>Miejsce na komponent z wykresem</Box>
         </Box>
       </Container>
-    </ThemeProvider>
+      <Footer />
+      </Wrapper>
   );
 };
 
