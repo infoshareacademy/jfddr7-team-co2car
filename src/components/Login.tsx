@@ -80,7 +80,7 @@ export const Login = () => {
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
-        setErrorMessage(`${t("errorIncorrectEmail")}`);
+        setErrorMessage(`${t("errorInvalidEmail")}`);
         setEmailError({ error: true });
         break;
       case WRONG_PASSWORD_ERROR:
@@ -119,7 +119,7 @@ export const Login = () => {
             >
               CO₂Car
             </Typography>
-            <Typography color="primary.main" paddingBottom={2}>
+            <Typography color="primary.main" paddingBottom={2} textAlign="center">
               {t("signInAnd")}
             </Typography>
             <TextField
@@ -151,6 +151,8 @@ export const Login = () => {
               }}
             >
               {t("dontHave")}
+              <br />
+              {t("goToRegister")}
             </Button>
             <Button
               onClick={() => {
