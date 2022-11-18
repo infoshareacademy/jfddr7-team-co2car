@@ -1,28 +1,32 @@
-import { FC, useContext, useRef, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, Stack, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Context } from "./../ContextProvider";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "..";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 interface NavigationProps {
   variant?: string;
+  bottomRefDiv?: React.RefObject;
 }
 
-export const Navigation = ({ variant }: NavigationProps) => {
+export const Navigation = ({ variant, bottomRefDiv }: NavigationProps) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { username } = useContext(Context);
+  const [loginSmallScreen, setLoginSmallScreen] = useState({});
 
   const handleLogOut = async (): Promise<void> => {
     await signOut(firebaseAuth);
     navigate("/");
   };
 
-  const [loginSmallScreen, setLoginSmallScreen] = useState({})
-
   useEffect((): void => {
     if (variant === "login") {
-      setLoginSmallScreen({className: "smallScreenOnly"});
+      setLoginSmallScreen({ className: "smallScreenOnly" });
     }
   }, []);
 
@@ -40,7 +44,7 @@ export const Navigation = ({ variant }: NavigationProps) => {
                 navigate("/home");
               }}
             >
-              Home
+              {t("home")}
             </Button>
             <Button
               color="inherit"
@@ -48,7 +52,7 @@ export const Navigation = ({ variant }: NavigationProps) => {
                 navigate("/profile");
               }}
             >
-              Profile
+              {t("profile")}
             </Button>
             <Button
               color="inherit"
@@ -56,22 +60,22 @@ export const Navigation = ({ variant }: NavigationProps) => {
                 handleLogOut();
               }}
             >
-              Sign Out
+              {t("signOut")}
             </Button>
+            <LanguageSwitcher />
           </Stack>
         )}
         {!username && (
-          <Stack
-          {...loginSmallScreen}
-          direction="row" spacing={2}>
+          <Stack {...loginSmallScreen} direction="row" spacing={2}>
             <Button
               color="inherit"
               onClick={() => {
                 navigate("/login");
               }}
             >
-              Sign In
+              {t("signIn")}
             </Button>
+            <LanguageSwitcher />
           </Stack>
         )}
       </Toolbar>

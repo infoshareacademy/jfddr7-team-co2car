@@ -5,8 +5,11 @@ import {
   Button,
   Link as MUILink,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export const LandingPage = () => {
+  const { t } = useTranslation();
+
   return (
     <Box
       flexGrow={1}
@@ -38,7 +41,7 @@ export const LandingPage = () => {
           target="blank"
           color="inherit"
         >
-          Learn more
+          {t("learnMore")}
         </MUILink>
       </Typography>
       <Typography

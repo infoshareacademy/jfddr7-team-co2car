@@ -10,7 +10,7 @@ import {
   Typography,
   Box,
   SelectChangeEvent,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,6 +23,8 @@ import { BarChart } from "./BarChart";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 interface Date {
   day: number;
@@ -61,7 +63,8 @@ export const Home: FC = () => {
   const { username, trip, setTrip, emission, setEmission } =
     useContext(Context);
 
-  const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
+  // const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
+  const API_KEY = "oVSMP05ulr27I4giXO3wA";
 
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
   const [vehicleModels, setVehicleModels] = useState<SingleCar[]>([emptyCar]);
@@ -329,17 +332,21 @@ export const Home: FC = () => {
             </Button>
           )}
           {!username && (
-            <Tooltip title="Sign in to use this feature" placement="bottom-start" arrow>
+            <Tooltip
+              title="Sign in to use this feature"
+              placement="bottom-start"
+              arrow
+            >
               <div>
-              <Button
-                disabled
-                variant="contained"
-                color="primary"
-                sx={{ marginBottom: 7 }}
-                onClick={addTrip}
-              >
-                Save result
-              </Button>
+                <Button
+                  disabled
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginBottom: 7 }}
+                  onClick={addTrip}
+                >
+                  Save result
+                </Button>
               </div>
             </Tooltip>
           )}

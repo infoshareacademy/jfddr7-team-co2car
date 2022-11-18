@@ -1,3 +1,4 @@
+import { Rechart } from "./LineChart";
 import {
   Container,
   Typography,
@@ -7,6 +8,7 @@ import {
   Avatar,
   ListItemAvatar,
   ListItemText,
+  Tooltip,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/Styles";
@@ -19,6 +21,8 @@ import { Footer } from "./Footer";
 import { Context } from "./../ContextProvider";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 interface Trip {
   date: string;
@@ -29,7 +33,7 @@ interface Trip {
 export const Profile = () => {
   const { username } = useContext(Context);
   const [elements, setElements] = useState<Trip[]>([]);
-
+  const [totalEmission, setTotalEmission] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,13 +48,21 @@ export const Profile = () => {
           tmpArr.push({ date, emission, owner });
         });
         setElements(tmpArr);
-        console.log(elements);
+        let emiSum: number = 0;
+        tmpArr.forEach((el) => {
+          return (emiSum += el.emission);
+        });
+        console.log(emiSum);
+        setTotalEmission(emiSum);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
   }, []);
+
+  console.log(totalEmission);
+  console.log(elements);
 
   return (
     <Wrapper>
@@ -72,30 +84,35 @@ export const Profile = () => {
           >
             My Data
           </Typography>
+
           <Box
-            sx={{ width: "40em" }}
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
+            sx={{
+              width: "100%",
+              height: 400,
+              maxWidth: 650,
+              bgcolor: "background.paper",
+            }}
           >
-            {elements.map((el, index) => (
-              <ListItem
-                key={index}
-                disablePadding={true}
-                secondaryAction={
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon style={{ color: "#62757f" }} />
-                  </IconButton>
-                }
-              >
-                <ListItemText
-                  style={{ color: "#62757f", fontSize: "0.9rem" }}
-                  primary={`The amount of emission from the trip made in a day ${el.date} is ${el.emission} kg`}
-                  // secondary={secondary ? "Secondary text" : null}
-                />
-              </ListItem>
-            ))}
+            <div style={{ height: "400px", overflowY: "auto" }}>
+              {elements.map((el, index) => (
+                <ListItem
+                  key={index}
+                  disablePadding={true}
+                  secondaryAction={
+                    <Tooltip title="Delete" placement="right" arrow>
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon style={{ color: "#62757f" }} />
+                      </IconButton>
+                    </Tooltip>
+                  }
+                >
+                  <ListItemText
+                    style={{ color: "#62757f", fontSize: "0.9rem" }}
+                    primary={`The amount of emission from the trip made in a day ${el.date} is ${el.emission} kg`}
+                  />
+                </ListItem>
+              ))}
+            </div>
           </Box>
           <Typography
             variant="h6"
@@ -103,9 +120,12 @@ export const Profile = () => {
             textAlign="center"
             color="primary.main"
           >
-            The amount of your car's annual carbon emission
+            The amount of your car's annual carbon emission {totalEmission} kg
           </Typography>
-          <Box>Miejsce na komponent z wykresem</Box>
+          <Box>
+            Miejsce na komponent z wykresem
+            <Rechart />
+          </Box>
         </Box>
       </Container>
       <Footer />
