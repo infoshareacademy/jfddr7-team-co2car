@@ -5,13 +5,9 @@ import {
   Box,
   ListItem,
   IconButton,
-  Avatar,
-  ListItemAvatar,
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./styles/Styles";
 import { useEffect, useContext, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firebaseDb } from "..";
@@ -20,7 +16,6 @@ import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { Context } from "./../ContextProvider";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FolderIcon from "@mui/icons-material/Folder";
 import { useTranslation } from "react-i18next";
 import "../i18n";
 
@@ -32,10 +27,15 @@ interface Trip {
 
 export const Profile = () => {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
   const { username } = useContext(Context);
   const [elements, setElements] = useState<Trip[]>([]);
-  //const [totalEmission, setTotalEmission] = useState<number | string>(0);
   const { totalEmission, setTotalEmission } = useContext(Context);
+
+  const deleteLabel = {
+    title: `${t("delete")}`,
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -84,7 +84,7 @@ export const Profile = () => {
             padding={3}
             textAlign="center"
           >
-            My Data
+            {t("myData")}
           </Typography>
 
           <Box
@@ -101,17 +101,25 @@ export const Profile = () => {
                   key={index}
                   disablePadding={true}
                   secondaryAction={
-                    <Tooltip title="Delete" placement="right" arrow>
+                    <Tooltip {...deleteLabel} placement="right" arrow>
                       <IconButton edge="end" aria-label="delete">
                         <DeleteIcon style={{ color: "#62757f" }} />
                       </IconButton>
                     </Tooltip>
                   }
                 >
-                  <ListItemText
-                    style={{ color: "#62757f", fontSize: "0.9rem" }}
-                    primary={`The amount of emission from the trip made in a day ${el.date} is ${el.emission} kg`}
-                  />
+                  {i18n.resolvedLanguage === "en" && (
+                    <ListItemText
+                      style={{ color: "#62757f", fontSize: "0.9rem" }}
+                      primary={`On ${el.date} my car emitted ${el.emission} kg of CO₂`}
+                    />
+                  )}
+                  {i18n.resolvedLanguage === "pl" && (
+                    <ListItemText
+                      style={{ color: "#62757f", fontSize: "0.9rem" }}
+                      primary={`Dnia ${el.date} mój samochód wyemitował ${el.emission} kg CO₂`}
+                    />
+                  )}
                 </ListItem>
               ))}
             </div>
@@ -123,8 +131,7 @@ export const Profile = () => {
             color="primary.main"
             paddingTop="2em"
           >
-            The amount of your car's annual carbon emission is {totalEmission}{" "}
-            kg
+            {t("annualAmount")} {totalEmission} kg
           </Typography>
           <Box style={{ marginBottom: "3em", paddingRight: "4em" }}>
             <VertBarChart />

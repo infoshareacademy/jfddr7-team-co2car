@@ -1,18 +1,6 @@
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { useRef, useState } from "react";
 import { Button, ButtonGroup } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { Context } from "./../ContextProvider";
-import { signOut } from "firebase/auth";
-import { firebaseAuth } from "..";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import "../i18n";
-
-const lngs = {
-  en: { nativeName: "EN" },
-  pl: { nativeName: "PL" },
-};
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
