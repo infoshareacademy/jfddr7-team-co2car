@@ -39,7 +39,7 @@ export const Login = () => {
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
 
-  const bottomDiv = useRef();
+  const bottomDivRef = useRef(null);
 
   const clearErrors = () => {
     setTimeout(() => {
@@ -90,7 +90,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Navigation variant={"login"} />
+      <Navigation variant={"login"} bottomDivRef={bottomDivRef} />
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -160,7 +160,7 @@ export const Login = () => {
         </form>
       </StyledLogin>
       <Footer />
-      <div ref={bottomDiv}></div>
+      <div ref={bottomDivRef}></div>
     </Wrapper>
   );
 };
