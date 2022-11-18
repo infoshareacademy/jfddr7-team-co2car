@@ -1,67 +1,58 @@
+// import styles from "./Register.module.css";
+// import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
 import {
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import {
   Box,
   TextField,
   Typography,
   Button,
+  ListItemSecondaryAction,
   Link as MUILink,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./styles/Styles";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { StyledLogin } from "./styles/Login.styles";
 import { LandingPage } from "./LandingPage";
+import { useTranslation } from "react-i18next";
+import "../i18n";
+
+/*interface RegisterProps {
+  registerEmail: string;
+  registerPassword: string;
+}*/
 
 const USER_ALREADY_EXISTS_ERROR = "auth/email-already-in-use";
 const WEAK_PASSWORD_ERROR = "auth/weak-password";
 const INVALID_EMAIL_ERROR = "auth/invalid-email";
 
-interface ErrorProps {
-  error: boolean;
-}
-
-const noErrors: ErrorProps = {
-  error: false,
-};
-
 export const Register = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { setUsername } = useContext(Context);
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
-  const navigate = useNavigate();
-  const { setUsername } = useContext(Context);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [emailError, setEmailError] = useState(noErrors);
-  const [passwordError, setPasswordError] = useState(noErrors);
-
-  const clearErrors = () => {
-    setTimeout(() => {
-      setErrorMessage("");
-      setEmailError(noErrors);
-      setPasswordError(noErrors);
-    }, 5000);
-  }
+  const [error, setError] = useState("");
 
   const onRegister = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
-    if (!registerPassword || !repeatedPassword || !registerEmail) {
-      setErrorMessage("All fields are required");
-      setEmailError({error: true});
-      setPasswordError({error: true});
-      clearErrors();
+    if (registerPassword !== repeatedPassword) {
+      setError("These passwords are different");
       return;
     }
-    if (registerPassword !== repeatedPassword) {
-      setErrorMessage("The passwords are different");
-      setPasswordError({error: true});
-      clearErrors();
+    if (!registerPassword || !repeatedPassword || !registerEmail) {
+      setError("All fields are required");
       return;
     }
     try {
@@ -75,31 +66,33 @@ export const Register = () => {
     } catch ({ code, message }) {
       handleFirebaseError(code);
     }
+    setTimeout(() => {
+      setError("");
+    }, 5000);
   };
 
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case WEAK_PASSWORD_ERROR:
-        setErrorMessage("Password needs at least 6 characters");
-        setPasswordError({error: true});
+        setError("Your password need to contain at least 6 characters");
         break;
       case INVALID_EMAIL_ERROR:
-        setErrorMessage("Incorrect email address");
-        setEmailError({error: true});
+        setError("Incorrect email address");
         break;
       case USER_ALREADY_EXISTS_ERROR:
-        setErrorMessage("Account for this email already exists");
-        setEmailError({error: true});
+        setError("An account with this email already exists");
         break;
       default:
         break;
     }
-    clearErrors();
+    setTimeout(() => {
+      setError("");
+    }, 5000);
   };
 
   return (
     <Wrapper>
-      <Navigation variant={"login"}/>
+      <Navigation />
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -113,51 +106,47 @@ export const Register = () => {
             <Typography
               color="primary.main"
               variant="h5"
+              padding={3}
               textAlign="center"
-              marginTop={5}
+              marginTop={2}
             >
-              CO₂Car
-            </Typography>
-            <Typography color="primary.main" paddingBottom={2}>
-              Sign up and check your car's emissions!
+              Sign up to use the app
             </Typography>
             <TextField
-              {...emailError}
               onChange={(event) => setRegisterEmail(event.target.value)}
               margin="normal"
               type={"email"}
               variant="outlined"
               placeholder="enter your email"
               label="E-mail"
-              autoComplete="off"
             />
             <TextField
-              {...passwordError}
               onChange={(event) => setRegisterPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
               placeholder="enter your password"
               label="Password"
-              autoComplete="off"
             />
             <TextField
-              {...passwordError}
               onChange={(event) => setRepeatedPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
               placeholder="repeat the password"
               label="Repeated password"
-              autoComplete="off"
             />
+            <Typography sx={{ height: 20, color: "secondary.main" }}>
+              {error}
+            </Typography>
             <Button
-              onClick={onRegister} sx={{ margin: 2 }} variant="contained">
+              onClick={onRegister}
+              sx={{ marginTop: 3 }}
+              variant="contained"
+            >
               Sign up
             </Button>
-            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F"}}>
-              {errorMessage}
-            </Typography>
+            <p>
               <Button
                 onClick={() => {
                   navigate("/login");
@@ -165,17 +154,9 @@ export const Register = () => {
               >
                 Already have an account?
                 <br />
-                Go to login instead.
+                Go to login
               </Button>
-              <Button
-              onClick={() => {
-                navigate("/home");
-              }}
-              sx={{ marginTop: 3, marginBottom: 7 }}
-              variant="contained"
-            >
-              Continue <br />without signing&nbsp;in
-            </Button>
+            </p>
           </Box>
         </form>
       </StyledLogin>

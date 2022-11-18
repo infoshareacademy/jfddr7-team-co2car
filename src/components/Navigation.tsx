@@ -10,10 +10,9 @@ import "../i18n";
 
 interface NavigationProps {
   variant?: string;
-  bottomRefDiv?: React.RefObject;
 }
 
-export const Navigation = ({ variant, bottomRefDiv }: NavigationProps) => {
+export const Navigation = ({ variant }: NavigationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { username } = useContext(Context);

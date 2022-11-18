@@ -60,7 +60,7 @@ export const Profile = () => {
     };
     fetchData();
   }, []);
-
+  //stan aktualizuje się po wykonaniu funkcji fetchData()
   console.log(totalEmission);
   console.log(elements);
 

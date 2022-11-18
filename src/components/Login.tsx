@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
@@ -15,6 +15,8 @@ import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { LandingPage } from "./LandingPage";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 const INVALID_EMAIL_ERROR = "auth/invalid-email";
 const WRONG_PASSWORD_ERROR = "auth/wrong-password";
@@ -36,22 +38,24 @@ export const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
-  
+
+  const bottomDiv = useRef();
+
   const clearErrors = () => {
     setTimeout(() => {
       setErrorMessage("");
       setEmailError(noErrors);
       setPasswordError(noErrors);
     }, 5000);
-  }
-  
+  };
+
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
     if (!login || !password) {
       setErrorMessage("All fields are required");
-      setEmailError({error: true});
-      setPasswordError({error: true});
+      setEmailError({ error: true });
+      setPasswordError({ error: true });
       clearErrors();
       return;
     }
@@ -68,15 +72,15 @@ export const Login = () => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
         setErrorMessage("Incorrect email format");
-        setEmailError({error: true});
+        setEmailError({ error: true });
         break;
       case WRONG_PASSWORD_ERROR:
         setErrorMessage("Incorrect password");
-        setPasswordError({error: true});
+        setPasswordError({ error: true });
         break;
       case USER_NOT_FOUND_ERROR:
         setErrorMessage("Email not yet registered");
-        setEmailError({error: true});
+        setEmailError({ error: true });
         break;
       default:
         break;
@@ -86,7 +90,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Navigation variant={"login"}/>
+      <Navigation variant={"login"} />
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -129,22 +133,19 @@ export const Login = () => {
             <Button onClick={onLogin} sx={{ margin: 2 }} variant="contained">
               Sign in
             </Button>
-            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F"}}>
+            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F" }}>
               {errorMessage}
             </Typography>
-            <Box
-              margin="normal"
-              sx={{height: "80px"}}
-            />
-              <Button
-                onClick={() => {
-                  navigate("/register");
-                }}
-              >
-                Don't have an account yet?
-                <br />
-                Go to registration instead.
-              </Button>
+            <Box margin="normal" sx={{ height: "80px" }} />
+            <Button
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Don't have an account yet?
+              <br />
+              Go to registration instead.
+            </Button>
             <Button
               onClick={() => {
                 navigate("/home");
@@ -152,12 +153,14 @@ export const Login = () => {
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue <br />without signing&nbsp;in
+              Continue <br />
+              without signing&nbsp;in
             </Button>
           </Box>
         </form>
       </StyledLogin>
       <Footer />
+      <div ref={bottomDiv}></div>
     </Wrapper>
   );
 };
