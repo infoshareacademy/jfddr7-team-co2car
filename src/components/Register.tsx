@@ -132,7 +132,7 @@ export const Register = () => {
             >
               CO₂Car
             </Typography>
-            <Typography color="primary.main" paddingBottom={2}>
+            <Typography color="primary.main" paddingBottom={2} textAlign="center">
               {t("signUpAnd")}
             </Typography>
             <TextField
@@ -174,6 +174,8 @@ export const Register = () => {
               }}
             >
               {t("alreadyHave")}
+              <br />
+              {t("goToLogin")}
             </Button>
             <Button
               onClick={() => {

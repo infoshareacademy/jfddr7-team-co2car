@@ -74,11 +74,11 @@ export const Home: FC = () => {
   const distanceLabel = {
     label: `${t("distanceLabel")}`,
   };
-  const makeLabel = {
-    label: `${t("makeLabel")}`,
+  const dateLabel = {
+    label: `${t("dateLabel")}`,
   };
-  const modelLabel = {
-    label: `${t("modelLabel")}`,
+  const tooltipLabel = {
+    title: `${t("tooltip")}`,
   };
 
   useEffect(() => {
@@ -257,14 +257,14 @@ export const Home: FC = () => {
         >
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <TextField
+              {...distanceLabel}
               id="dystans"
-              label="Distance (km)"
               type="number"
               onChange={(e) => handleDistance(e)}
             ></TextField>
           </FormControl>
           <FormControl sx={{ minWidth: 300, m: 1 }}>
-            <InputLabel id="marka">Brand</InputLabel>
+            <InputLabel id="marka">{t("makeLabel")}</InputLabel>
             <Select
               labelId="marka"
               id="marka"
@@ -283,7 +283,7 @@ export const Home: FC = () => {
             </Select>
           </FormControl>
           <FormControl sx={{ minWidth: 300, m: 1 }}>
-            <InputLabel id="model">Model</InputLabel>
+            <InputLabel id="model">{t("modelLabel")}</InputLabel>
             <Select
               labelId="model"
               id="model"
@@ -303,7 +303,7 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Date"
+                {...dateLabel}
                 value={date}
                 onChange={setDate}
                 renderInput={(params) => <TextField {...params} />}
@@ -316,7 +316,7 @@ export const Home: FC = () => {
             sx={{ m: 1, marginTop: "2em" }}
             onClick={fetchEmission}
           >
-            Calculate emission
+            {t("calculateButton")}
           </Button>
           <Typography
             marginTop={1}
@@ -326,7 +326,9 @@ export const Home: FC = () => {
             textAlign="center"
             color="primary.main"
           >
-            {emission} kg
+            {emission}
+            {""}
+            {t("resultUnit")}
           </Typography>
           <BarChart />
           {!!username && (
@@ -336,15 +338,11 @@ export const Home: FC = () => {
               sx={{ m: 1, marginBottom: 5 }}
               onClick={addTrip}
             >
-              Save result
+              {t("save")}
             </Button>
           )}
           {!username && (
-            <Tooltip
-              title="Sign in to use this feature"
-              placement="bottom-start"
-              arrow
-            >
+            <Tooltip {...tooltipLabel} placement="bottom-start" arrow>
               <div>
                 <Button
                   disabled
@@ -353,7 +351,7 @@ export const Home: FC = () => {
                   sx={{ marginBottom: 7 }}
                   onClick={addTrip}
                 >
-                  Save result
+                  {t("save")}
                 </Button>
               </div>
             </Tooltip>
