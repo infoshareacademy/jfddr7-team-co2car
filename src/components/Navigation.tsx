@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { AppBar, Toolbar, Typography, Stack, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Context } from "./../ContextProvider";
@@ -10,10 +10,10 @@ import "../i18n";
 
 interface NavigationProps {
   variant?: string;
-  bottomRefDiv?: React.RefObject;
+  bottomDivRef?: React.RefObject<HTMLDivElement>;
 }
 
-export const Navigation = ({ variant, bottomRefDiv }: NavigationProps) => {
+export const Navigation = ({ variant, bottomDivRef }: NavigationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { username } = useContext(Context);
@@ -23,6 +23,13 @@ export const Navigation = ({ variant, bottomRefDiv }: NavigationProps) => {
     await signOut(firebaseAuth);
     navigate("/");
   };
+
+  const handleLogin = useCallback(() => {
+    if (bottomDivRef) {
+      bottomDivRef.current?.scrollIntoView();
+    }
+    navigate("/login");
+  }, [bottomDivRef, navigate]);
 
   useEffect((): void => {
     if (variant === "login") {
@@ -69,9 +76,7 @@ export const Navigation = ({ variant, bottomRefDiv }: NavigationProps) => {
           <Stack {...loginSmallScreen} direction="row" spacing={2}>
             <Button
               color="inherit"
-              onClick={() => {
-                navigate("/login");
-              }}
+              onClick={handleLogin}
             >
               {t("signIn")}
             </Button>

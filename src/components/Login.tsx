@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
@@ -36,6 +36,8 @@ export const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
+
+  const bottomDivRef = useRef(null);
   
   const clearErrors = () => {
     setTimeout(() => {
@@ -86,7 +88,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Navigation variant={"login"}/>
+      <Navigation variant={"login"} bottomDivRef={bottomDivRef}/>
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -158,6 +160,7 @@ export const Login = () => {
         </form>
       </StyledLogin>
       <Footer />
+      <div ref={bottomDivRef}></div>
     </Wrapper>
   );
 };
