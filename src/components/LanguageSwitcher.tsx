@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "./../ContextProvider";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "..";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import "../i18n";
 
 const lngs = {

@@ -41,14 +41,13 @@ export const Login = () => {
   const [passwordError, setPasswordError] = useState(noErrors);
   const bottomDivRef = useRef(null);
 
-  const passwordLabels = {
-    placeholder: `${t("passwordPlaceholder")}`,
-    label: `${t("passwordLabel")}`,
-  };
-
   const emailLabels = {
     placeholder: `${t("emailPlaceholder")}`,
     label: `${t("emailLabel")}`,
+  };
+  const passwordLabels = {
+    placeholder: `${t("passwordPlaceholder")}`,
+    label: `${t("passwordLabel")}`,
   };
 
   const clearErrors = () => {
