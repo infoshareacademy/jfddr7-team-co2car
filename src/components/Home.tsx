@@ -10,7 +10,7 @@ import {
   Typography,
   Box,
   SelectChangeEvent,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,6 +23,8 @@ import { BarChart } from "./BarChart";
 import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 interface Date {
   day: number;
@@ -58,17 +60,26 @@ const emptyCar: SingleCar = {
 };
 
 export const Home: FC = () => {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const { t } = useTranslation();
   const { username, trip, setTrip, emission, setEmission } =
     useContext(Context);
-
-  const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
-
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
   const [vehicleModels, setVehicleModels] = useState<SingleCar[]>([emptyCar]);
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState<Dayjs | null>(null);
+
+  const distanceLabel = {
+    label: `${t("distanceLabel")}`,
+  };
+  const makeLabel = {
+    label: `${t("makeLabel")}`,
+  };
+  const modelLabel = {
+    label: `${t("modelLabel")}`,
+  };
 
   useEffect(() => {
     return () => {
@@ -228,14 +239,14 @@ export const Home: FC = () => {
       <Navigation />
       <Container className="mainContent" maxWidth="md">
         <Typography
-          marginTop={1}
+          marginTop={3}
           marginBottom={1}
           variant="h5"
           padding={3}
           textAlign="center"
           color="primary.main"
         >
-          Calculate your car's carbon emission
+          {t("calculateYour")}
         </Typography>
         <Box
           display={"flex"}
@@ -302,7 +313,7 @@ export const Home: FC = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ m: 1 }}
+            sx={{ m: 1, marginTop: "2em" }}
             onClick={fetchEmission}
           >
             Calculate emission
@@ -329,17 +340,21 @@ export const Home: FC = () => {
             </Button>
           )}
           {!username && (
-            <Tooltip title="Sign in to use this feature" placement="bottom-start" arrow>
+            <Tooltip
+              title="Sign in to use this feature"
+              placement="bottom-start"
+              arrow
+            >
               <div>
-              <Button
-                disabled
-                variant="contained"
-                color="primary"
-                sx={{ marginBottom: 7 }}
-                onClick={addTrip}
-              >
-                Save result
-              </Button>
+                <Button
+                  disabled
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginBottom: 7 }}
+                  onClick={addTrip}
+                >
+                  Save result
+                </Button>
               </div>
             </Tooltip>
           )}

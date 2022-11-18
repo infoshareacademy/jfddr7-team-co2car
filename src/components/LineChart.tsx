@@ -26,7 +26,7 @@ export const Rechart = () => {
 
   return (
     <div>
-      <LineChart width={1000} height={500} data={data} margin={{ top: 50 }}>
+      <LineChart width={800} height={400} data={data} margin={{ top: 50 }}>
         <Line
           type="monotone"
           dataKey="react"

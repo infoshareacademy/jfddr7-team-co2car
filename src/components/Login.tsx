@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
@@ -15,6 +15,8 @@ import { Wrapper } from "./styles/Wrapper.styles";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { LandingPage } from "./LandingPage";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 const INVALID_EMAIL_ERROR = "auth/invalid-email";
 const WRONG_PASSWORD_ERROR = "auth/wrong-password";
@@ -30,28 +32,39 @@ const noErrors: ErrorProps = {
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { setUsername } = useContext(Context);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { setUsername } = useContext(Context);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
-  
+  const bottomDivRef = useRef(null);
+
+  const emailLabels = {
+    placeholder: `${t("emailPlaceholder")}`,
+    label: `${t("emailLabel")}`,
+  };
+  const passwordLabels = {
+    placeholder: `${t("passwordPlaceholder")}`,
+    label: `${t("passwordLabel")}`,
+  };
+
   const clearErrors = () => {
     setTimeout(() => {
       setErrorMessage("");
       setEmailError(noErrors);
       setPasswordError(noErrors);
     }, 5000);
-  }
-  
+  };
+
   const onLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
     if (!login || !password) {
-      setErrorMessage("All fields are required");
-      setEmailError({error: true});
-      setPasswordError({error: true});
+      setErrorMessage(`${t("errorAllFields")}`);
+      setEmailError({ error: true });
+      setPasswordError({ error: true });
       clearErrors();
       return;
     }
@@ -67,16 +80,16 @@ export const Login = () => {
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
-        setErrorMessage("Incorrect email format");
-        setEmailError({error: true});
+        setErrorMessage(`${t("errorIncorrectEmail")}`);
+        setEmailError({ error: true });
         break;
       case WRONG_PASSWORD_ERROR:
-        setErrorMessage("Incorrect password");
-        setPasswordError({error: true});
+        setErrorMessage(`${t("errorIncorrectPassword")}`);
+        setPasswordError({ error: true });
         break;
       case USER_NOT_FOUND_ERROR:
-        setErrorMessage("Email not yet registered");
-        setEmailError({error: true});
+        setErrorMessage(`${t("errorNoAccount")}`);
+        setEmailError({ error: true });
         break;
       default:
         break;
@@ -86,7 +99,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Navigation variant={"login"}/>
+      <Navigation variant={"login"} bottomDivRef={bottomDivRef} />
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -97,6 +110,7 @@ export const Login = () => {
             margin={0}
             padding={3}
           >
+            <div ref={bottomDivRef}></div>
             <Typography
               color="primary.main"
               variant="h5"
@@ -106,45 +120,38 @@ export const Login = () => {
               CO₂Car
             </Typography>
             <Typography color="primary.main" paddingBottom={2}>
-              Sign in and check your car's emissions!
+              {t("signInAnd")}
             </Typography>
             <TextField
               {...emailError}
+              {...emailLabels}
               onChange={(event) => setLogin(event.target.value)}
               margin="normal"
               type={"email"}
               variant="outlined"
-              placeholder="enter your email"
-              label="E-mail"
             />
             <TextField
               {...passwordError}
+              {...passwordLabels}
               onChange={(event) => setPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
-              placeholder="enter your password"
-              label="Password"
             />
             <Button onClick={onLogin} sx={{ margin: 2 }} variant="contained">
-              Sign in
+              {t("signIn")}
             </Button>
-            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F"}}>
+            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F" }}>
               {errorMessage}
             </Typography>
-            <Box
-              margin="normal"
-              sx={{height: "80px"}}
-            />
-              <Button
-                onClick={() => {
-                  navigate("/register");
-                }}
-              >
-                Don't have an account yet?
-                <br />
-                Go to registration instead.
-              </Button>
+            <Box margin="normal" sx={{ height: "80px" }} />
+            <Button
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              {t("dontHave")}
+            </Button>
             <Button
               onClick={() => {
                 navigate("/home");
@@ -152,7 +159,7 @@ export const Login = () => {
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue <br />without signing&nbsp;in
+              {t("continue")}
             </Button>
           </Box>
         </form>

@@ -12,6 +12,7 @@ import { firebaseAuth, firebaseDb } from "./index";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./components/styles/Styles";
 import { Footer } from "./components/Footer";
+// import { useTranslation } from "react-i18next";
 
 export const App: FC = () => {
   const navigate = useNavigate();

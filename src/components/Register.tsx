@@ -2,9 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { Context } from "../ContextProvider";
-import {
-  createUserWithEmailAndPassword
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
   Box,
   TextField,
@@ -17,6 +15,8 @@ import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { StyledLogin } from "./styles/Login.styles";
 import { LandingPage } from "./LandingPage";
+import { useTranslation } from "react-i18next";
+import "../i18n";
 
 const USER_ALREADY_EXISTS_ERROR = "auth/email-already-in-use";
 const WEAK_PASSWORD_ERROR = "auth/weak-password";
@@ -31,14 +31,28 @@ const noErrors: ErrorProps = {
 };
 
 export const Register = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { setUsername } = useContext(Context);
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
-  const navigate = useNavigate();
-  const { setUsername } = useContext(Context);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
+
+  const emailLabels = {
+    placeholder: `${t("emailPlaceholder")}`,
+    label: `${t("emailLabel")}`,
+  };
+  const passwordLabels = {
+    placeholder: `${t("passwordPlaceholder")}`,
+    label: `${t("passwordLabel")}`,
+  };
+  const password2Labels = {
+    placeholder: `${t("password2Placeholder")}`,
+    label: `${t("password2Label")}`,
+  };
 
   const clearErrors = () => {
     setTimeout(() => {
@@ -46,21 +60,21 @@ export const Register = () => {
       setEmailError(noErrors);
       setPasswordError(noErrors);
     }, 5000);
-  }
+  };
 
   const onRegister = async (
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
     if (!registerPassword || !repeatedPassword || !registerEmail) {
-      setErrorMessage("All fields are required");
-      setEmailError({error: true});
-      setPasswordError({error: true});
+      setErrorMessage(`${t("errorAllFields")}`);
+      setEmailError({ error: true });
+      setPasswordError({ error: true });
       clearErrors();
       return;
     }
     if (registerPassword !== repeatedPassword) {
-      setErrorMessage("The passwords are different");
-      setPasswordError({error: true});
+      setErrorMessage(`${t("errorPasswordsDifferent")}`);
+      setPasswordError({ error: true });
       clearErrors();
       return;
     }
@@ -80,16 +94,16 @@ export const Register = () => {
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case WEAK_PASSWORD_ERROR:
-        setErrorMessage("Password needs at least 6 characters");
-        setPasswordError({error: true});
+        setErrorMessage(`${t("errorWeakPassword")}`);
+        setPasswordError({ error: true });
         break;
       case INVALID_EMAIL_ERROR:
-        setErrorMessage("Incorrect email address");
-        setEmailError({error: true});
+        setErrorMessage(`${t("errorInvalidEmail")}`);
+        setEmailError({ error: true });
         break;
       case USER_ALREADY_EXISTS_ERROR:
-        setErrorMessage("Account for this email already exists");
-        setEmailError({error: true});
+        setErrorMessage(`${t("errorAlreadyExists")}`);
+        setEmailError({ error: true });
         break;
       default:
         break;
@@ -99,7 +113,7 @@ export const Register = () => {
 
   return (
     <Wrapper>
-      <Navigation variant={"login"}/>
+      <Navigation variant={"login"} />
       <StyledLogin className="mainContent">
         <LandingPage />
         <form>
@@ -119,62 +133,56 @@ export const Register = () => {
               CO₂Car
             </Typography>
             <Typography color="primary.main" paddingBottom={2}>
-              Sign up and check your car's emissions!
+              {t("signUpAnd")}
             </Typography>
             <TextField
               {...emailError}
+              {...emailLabels}
               onChange={(event) => setRegisterEmail(event.target.value)}
               margin="normal"
               type={"email"}
               variant="outlined"
-              placeholder="enter your email"
-              label="E-mail"
               autoComplete="off"
             />
             <TextField
               {...passwordError}
+              {...passwordLabels}
               onChange={(event) => setRegisterPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
-              placeholder="enter your password"
-              label="Password"
               autoComplete="off"
             />
             <TextField
               {...passwordError}
+              {...password2Labels}
               onChange={(event) => setRepeatedPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
-              placeholder="repeat the password"
-              label="Repeated password"
               autoComplete="off"
             />
-            <Button
-              onClick={onRegister} sx={{ margin: 2 }} variant="contained">
-              Sign up
+            <Button onClick={onRegister} sx={{ margin: 2 }} variant="contained">
+              {t("signUp")}
             </Button>
-            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F"}}>
+            <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F" }}>
               {errorMessage}
             </Typography>
-              <Button
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                Already have an account?
-                <br />
-                Go to login instead.
-              </Button>
-              <Button
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              {t("alreadyHave")}
+            </Button>
+            <Button
               onClick={() => {
                 navigate("/home");
               }}
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue <br />without signing&nbsp;in
+              {t("continue")}
             </Button>
           </Box>
         </form>
