@@ -74,6 +74,9 @@ export const Home: FC = () => {
   const distanceLabel = {
     label: `${t("distanceLabel")}`,
   };
+  const dateLabel = {
+    label: `${t("dateLabel")}`,
+  };
   const tooltipLabel = {
     title: `${t("tooltip")}`,
   };
@@ -300,7 +303,7 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Date"
+                {...dateLabel}
                 value={date}
                 onChange={setDate}
                 renderInput={(params) => <TextField {...params} />}
@@ -339,11 +342,7 @@ export const Home: FC = () => {
             </Button>
           )}
           {!username && (
-            <Tooltip
-              {...tooltipLabel}
-              placement="bottom-start"
-              arrow
-            >
+            <Tooltip {...tooltipLabel} placement="bottom-start" arrow>
               <div>
                 <Button
                   disabled
