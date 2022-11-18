@@ -1,4 +1,4 @@
-import { Rechart } from "./LineChart";
+import { VertBarChart } from "./VertBarChart";
 import {
   Container,
   Typography,
@@ -31,9 +31,11 @@ interface Trip {
 }
 
 export const Profile = () => {
+  const { t } = useTranslation();
   const { username } = useContext(Context);
   const [elements, setElements] = useState<Trip[]>([]);
-  const [totalEmission, setTotalEmission] = useState(0);
+  //const [totalEmission, setTotalEmission] = useState<number | string>(0);
+  const { totalEmission, setTotalEmission } = useContext(Context);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +55,7 @@ export const Profile = () => {
           return (emiSum += el.emission);
         });
         console.log(emiSum);
-        setTotalEmission(emiSum);
+        setTotalEmission(emiSum.toFixed(2));
       } catch (error) {
         console.log(error);
       }
@@ -88,12 +90,12 @@ export const Profile = () => {
           <Box
             sx={{
               width: "100%",
-              height: 400,
+              height: "400",
               maxWidth: 650,
               bgcolor: "background.paper",
             }}
           >
-            <div style={{ height: "400px", overflowY: "auto" }}>
+            <div style={{ height: "200px", overflowY: "auto" }}>
               {elements.map((el, index) => (
                 <ListItem
                   key={index}
@@ -119,12 +121,13 @@ export const Profile = () => {
             padding={3}
             textAlign="center"
             color="primary.main"
+            paddingTop="2em"
           >
-            The amount of your car's annual carbon emission {totalEmission} kg
+            The amount of your car's annual carbon emission is {totalEmission}{" "}
+            kg
           </Typography>
-          <Box>
-            Miejsce na komponent z wykresem
-            <Rechart />
+          <Box style={{ marginBottom: "3em", paddingRight: "4em" }}>
+            <VertBarChart />
           </Box>
         </Box>
       </Container>

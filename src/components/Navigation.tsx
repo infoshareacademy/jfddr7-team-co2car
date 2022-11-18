@@ -26,7 +26,7 @@ export const Navigation = ({ variant, bottomDivRef }: NavigationProps) => {
 
   const handleLogin = useCallback(() => {
     if (bottomDivRef) {
-      bottomDivRef.current?.scrollIntoView();
+      bottomDivRef.current?.scrollIntoView({ behavior: "smooth" });
     }
     navigate("/login");
   }, [bottomDivRef, navigate]);
@@ -73,8 +73,8 @@ export const Navigation = ({ variant, bottomDivRef }: NavigationProps) => {
           </Stack>
         )}
         {!username && (
-          <Stack {...loginSmallScreen} direction="row" spacing={2}>
-            <Button color="inherit" onClick={handleLogin}>
+          <Stack direction="row" spacing={2}>
+            <Button {...loginSmallScreen} color="inherit" onClick={handleLogin}>
               {t("signIn")}
             </Button>
             <LanguageSwitcher />

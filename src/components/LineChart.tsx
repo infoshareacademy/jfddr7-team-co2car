@@ -22,7 +22,7 @@ const data = [
 ];
 
 export const Rechart = () => {
-  //const { emission } = useContext(Context);
+  const { emission } = useContext(Context);
 
   return (
     <div>

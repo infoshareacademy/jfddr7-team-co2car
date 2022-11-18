@@ -32,14 +32,24 @@ const noErrors: ErrorProps = {
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { setUsername } = useContext(Context);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { setUsername } = useContext(Context);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState(noErrors);
   const [passwordError, setPasswordError] = useState(noErrors);
-
   const bottomDivRef = useRef(null);
+
+  const passwordLabels = {
+    placeholder: `${t("passwordPlaceholder")}`,
+    label: `${t("passwordLabel")}`,
+  };
+
+  const emailLabels = {
+    placeholder: `${t("emailPlaceholder")}`,
+    label: `${t("emailLabel")}`,
+  };
 
   const clearErrors = () => {
     setTimeout(() => {
@@ -53,7 +63,7 @@ export const Login = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
     if (!login || !password) {
-      setErrorMessage("All fields are required");
+      setErrorMessage(`${t("errorAllFields")}`);
       setEmailError({ error: true });
       setPasswordError({ error: true });
       clearErrors();
@@ -71,15 +81,15 @@ export const Login = () => {
   const handleFirebaseError = (code: unknown) => {
     switch (code) {
       case INVALID_EMAIL_ERROR:
-        setErrorMessage("Incorrect email format");
+        setErrorMessage(`${t("errorIncorrectEmail")}`);
         setEmailError({ error: true });
         break;
       case WRONG_PASSWORD_ERROR:
-        setErrorMessage("Incorrect password");
+        setErrorMessage(`${t("errorIncorrectPassword")}`);
         setPasswordError({ error: true });
         break;
       case USER_NOT_FOUND_ERROR:
-        setErrorMessage("Email not yet registered");
+        setErrorMessage(`${t("errorNoAccount")}`);
         setEmailError({ error: true });
         break;
       default:
@@ -101,6 +111,7 @@ export const Login = () => {
             margin={0}
             padding={3}
           >
+            <div ref={bottomDivRef}></div>
             <Typography
               color="primary.main"
               variant="h5"
@@ -110,28 +121,26 @@ export const Login = () => {
               CO₂Car
             </Typography>
             <Typography color="primary.main" paddingBottom={2}>
-              Sign in and check your car's emissions!
+              {t("signInAnd")}
             </Typography>
             <TextField
               {...emailError}
+              {...emailLabels}
               onChange={(event) => setLogin(event.target.value)}
               margin="normal"
               type={"email"}
               variant="outlined"
-              placeholder="enter your email"
-              label="E-mail"
             />
             <TextField
               {...passwordError}
+              {...passwordLabels}
               onChange={(event) => setPassword(event.target.value)}
               margin="normal"
               type={"password"}
               variant="outlined"
-              placeholder="enter your password"
-              label="Password"
             />
             <Button onClick={onLogin} sx={{ margin: 2 }} variant="contained">
-              Sign in
+              {t("signIn")}
             </Button>
             <Typography paddingBottom={3} sx={{ height: 20, color: "#D32F2F" }}>
               {errorMessage}
@@ -142,9 +151,7 @@ export const Login = () => {
                 navigate("/register");
               }}
             >
-              Don't have an account yet?
-              <br />
-              Go to registration instead.
+              {t("dontHave")}
             </Button>
             <Button
               onClick={() => {
@@ -153,14 +160,12 @@ export const Login = () => {
               sx={{ marginTop: 3, marginBottom: 7 }}
               variant="contained"
             >
-              Continue <br />
-              without signing&nbsp;in
+              {t("continue")}
             </Button>
           </Box>
         </form>
       </StyledLogin>
       <Footer />
-      <div ref={bottomDivRef}></div>
     </Wrapper>
   );
 };

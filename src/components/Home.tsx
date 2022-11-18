@@ -60,18 +60,26 @@ const emptyCar: SingleCar = {
 };
 
 export const Home: FC = () => {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const { t } = useTranslation();
   const { username, trip, setTrip, emission, setEmission } =
     useContext(Context);
-
-  // const API_KEY = "jXRLfddDOE8RZeuDZtugQ";
-  const API_KEY = "oVSMP05ulr27I4giXO3wA";
-
   const [vehicleMakes, setVehicleMakes] = useState<SingleCar[]>([emptyCar]);
   const [vehicleModels, setVehicleModels] = useState<SingleCar[]>([emptyCar]);
   const [chosenMake, setChosenMake] = useState("");
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState<Dayjs | null>(null);
+
+  const distanceLabel = {
+    label: `${t("distanceLabel")}`,
+  };
+  const makeLabel = {
+    label: `${t("makeLabel")}`,
+  };
+  const modelLabel = {
+    label: `${t("modelLabel")}`,
+  };
 
   useEffect(() => {
     return () => {
@@ -231,14 +239,14 @@ export const Home: FC = () => {
       <Navigation />
       <Container className="mainContent" maxWidth="md">
         <Typography
-          marginTop={1}
+          marginTop={3}
           marginBottom={1}
           variant="h5"
           padding={3}
           textAlign="center"
           color="primary.main"
         >
-          Calculate your car's carbon emission
+          {t("calculateYour")}
         </Typography>
         <Box
           display={"flex"}
@@ -305,7 +313,7 @@ export const Home: FC = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ m: 1 }}
+            sx={{ m: 1, marginTop: "2em" }}
             onClick={fetchEmission}
           >
             Calculate emission
