@@ -1,14 +1,25 @@
-import {
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Link as MUILink,
-} from "@mui/material";
+import { Box, Typography, Link as MUILink } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 export const LandingPage = () => {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+
+  // const hrefLanguage = () => {
+  //   if (i18n.resolvedLanguage === "pl") {
+  //     return {
+  //       href: "https://www.consilium.europa.eu/pl/infographics/fit-for-55-emissions-cars-and-vans/",
+  //     };
+  //   } else {
+  //     return {
+  //       href: "https://www.consilium.europa.eu/en/infographics/fit-for-55-emissions-cars-and-vans/",
+  //     };
+  //   }
+  // };
+
+  const hrefLanguage = {
+        href: `${t("linkLanguage")}`,
+      };
 
   return (
     <Box
@@ -31,7 +42,7 @@ export const LandingPage = () => {
       <Typography color="primary.contrastText" padding={3} marginTop={2}>
         {t("theCouncil")}{" "}
         <MUILink
-          href="https://www.consilium.europa.eu/en/infographics/fit-for-55-emissions-cars-and-vans/"
+          {...hrefLanguage}
           target="blank"
           color="inherit"
         >
