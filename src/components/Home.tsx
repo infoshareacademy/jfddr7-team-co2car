@@ -227,6 +227,7 @@ export const Home: FC = () => {
           emission: emission,
           date: dayjs(date, "MM/DD/YYYY").format("MM/DD/YYYY"),
           owner: username,
+          id: tripId
         });
       } catch (error) {
         console.log(error);

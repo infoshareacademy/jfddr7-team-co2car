@@ -73,7 +73,7 @@ export const VertBarChart = () => {
           fontSize={10}
           underline="hover"
         >
-          * Source of data
+          * {t("source")}
         </Link>
       </div>
     </>
