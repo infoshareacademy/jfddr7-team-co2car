@@ -67,7 +67,7 @@ export const VertBarChart = () => {
       <div
         style={{
           width: "95vw",
-          maxWidth: "600px",
+          maxWidth: "700px",
           margin: "0 auto",
           marginBottom: "2em",
         }}

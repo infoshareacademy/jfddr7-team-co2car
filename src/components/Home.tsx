@@ -92,6 +92,7 @@ export const Home: FC = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return () => {
       setEmission(0);
     };
@@ -202,7 +203,7 @@ export const Home: FC = () => {
   }, [chosenMake]);
 
   const fetchEmission = async () => {
-    if (!(distance && chosenMake && chosenModel && date)) {
+    if (!(distance && chosenMake && chosenModel)) {
       setErrorMessage(`${t("errorRequiredFields")}`);
       setInputError({ error: true });
       setTimeout(() => {

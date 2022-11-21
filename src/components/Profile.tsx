@@ -60,8 +60,8 @@ export const Profile = () => {
         myData.forEach((el) => {
           const { date, emission, owner, id } = el.data();
           tmpArr.push({ date, emission, owner, id });
-          console.log(tmpArr);
-          console.log(el.data());
+          // console.log(tmpArr);
+          // console.log(el.data());
         });
         setElements(tmpArr);
         let emiSum: number = 0;
@@ -109,10 +109,16 @@ export const Profile = () => {
               bgcolor: "background.paper",
             }}
           >
-            <div style={{ height: "200px", overflowY: "auto" }}>
+            <div
+              style={{
+                height: "200px",
+                overflowY: "auto",
+                maxWidth: "525px",
+                margin: "0 auto",
+              }}
+            >
               {elements.map((el, index) => (
                 <ListItem
-                  // tripId={}
                   key={index}
                   disablePadding={true}
                   secondaryAction={
@@ -129,18 +135,20 @@ export const Profile = () => {
                     </Tooltip>
                   }
                 >
-                  {i18n.resolvedLanguage === "en" && (
-                    <ListItemText
-                      style={{ color: "#62757f", fontSize: "0.9rem" }}
-                      primary={`On ${el.date} my car emitted ${el.emission} kg of CO₂`}
-                    />
-                  )}
-                  {i18n.resolvedLanguage === "pl" && (
-                    <ListItemText
-                      style={{ color: "#62757f", fontSize: "0.9rem" }}
-                      primary={`Dnia ${el.date} mój samochód wyemitował ${el.emission} kg CO₂`}
-                    />
-                  )}
+                  <div style={{ width: "90%" }}>
+                    {i18n.resolvedLanguage === "en" && (
+                      <ListItemText
+                        style={{ color: "#62757f", fontSize: "0.9rem" }}
+                        primary={`On ${el.date} my car emitted ${el.emission} kg of CO₂`}
+                      />
+                    )}
+                    {i18n.resolvedLanguage === "pl" && (
+                      <ListItemText
+                        style={{ color: "#62757f", fontSize: "0.9rem" }}
+                        primary={`Dnia ${el.date} mój samochód wyemitował ${el.emission} kg CO₂`}
+                      />
+                    )}
+                  </div>
                 </ListItem>
               ))}
             </div>

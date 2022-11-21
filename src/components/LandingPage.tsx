@@ -5,18 +5,6 @@ export const LandingPage = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
 
-  // const hrefLanguage = () => {
-  //   if (i18n.resolvedLanguage === "pl") {
-  //     return {
-  //       href: "https://www.consilium.europa.eu/pl/infographics/fit-for-55-emissions-cars-and-vans/",
-  //     };
-  //   } else {
-  //     return {
-  //       href: "https://www.consilium.europa.eu/en/infographics/fit-for-55-emissions-cars-and-vans/",
-  //     };
-  //   }
-  // };
-
   const hrefLanguage = {
         href: `${t("linkLanguage")}`,
       };
