@@ -63,9 +63,9 @@ export const BarChart = () => {
         backgroundColor: "#e57373",
       },
       {
-        label: `${t("chartLabelAcceptable")} [600 kg]`,
+        label: `${t("chartLabelAcceptable")} [50 kg]`,
         //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        data: [0.6 * 1000],
+        data: [0.05 * 1000],
         backgroundColor: "#46a38c",
         //"#00695c",
       },

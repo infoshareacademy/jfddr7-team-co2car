@@ -92,6 +92,7 @@ export const Home: FC = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return () => {
       setEmission(0);
     };
