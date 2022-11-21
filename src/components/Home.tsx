@@ -59,6 +59,14 @@ const emptyCar: SingleCar = {
   modelId: "",
 };
 
+interface ErrorProps {
+  error: boolean;
+}
+
+const noErrors: ErrorProps = {
+  error: false,
+};
+
 export const Home: FC = () => {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const { t } = useTranslation();
@@ -70,6 +78,8 @@ export const Home: FC = () => {
   const [chosenModel, setChosenModel] = useState("");
   const [distance, setDistance] = useState(0);
   const [date, setDate] = useState<Dayjs | null>(null);
+  const [inputError, setInputError] = useState(noErrors);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const distanceLabel = {
     label: `${t("distanceLabel")}`,
@@ -192,6 +202,15 @@ export const Home: FC = () => {
   }, [chosenMake]);
 
   const fetchEmission = async () => {
+    if (!(distance && chosenMake && chosenModel && date)) {
+      setErrorMessage(`${t("errorRequiredFields")}`);
+      setInputError({ error: true });
+      setTimeout(() => {
+        setErrorMessage("");
+        setInputError(noErrors);
+      }, 5000);
+      return;
+    }
     try {
       const response = await fetch(
         "https://www.carboninterface.com/api/v1/estimates",
@@ -227,7 +246,7 @@ export const Home: FC = () => {
           emission: emission,
           date: dayjs(date, "MM/DD/YYYY").format("MM/DD/YYYY"),
           owner: username,
-          id: tripId
+          id: tripId,
         });
       } catch (error) {
         console.log(error);
@@ -258,6 +277,7 @@ export const Home: FC = () => {
         >
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <TextField
+              {...inputError}
               {...distanceLabel}
               id="dystans"
               type="number"
@@ -267,6 +287,7 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <InputLabel id="marka">{t("makeLabel")}</InputLabel>
             <Select
+              {...inputError}
               labelId="marka"
               id="marka"
               label="Brand"
@@ -286,6 +307,7 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <InputLabel id="model">{t("modelLabel")}</InputLabel>
             <Select
+              {...inputError}
               labelId="model"
               id="model"
               label="Model"
@@ -304,6 +326,7 @@ export const Home: FC = () => {
           <FormControl sx={{ minWidth: 300, m: 1 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                {...inputError}
                 {...dateLabel}
                 value={date}
                 onChange={setDate}
@@ -319,6 +342,9 @@ export const Home: FC = () => {
           >
             {t("calculateButton")}
           </Button>
+          <Typography sx={{ height: 20, color: "#D32F2F" }}>
+            {errorMessage}
+          </Typography>
           <Typography
             marginTop={1}
             marginBottom={0}
@@ -327,9 +353,7 @@ export const Home: FC = () => {
             textAlign="center"
             color="primary.main"
           >
-            {emission}
-            {""}
-            {t("resultUnit")}
+            {emission} {t("resultUnit")}
           </Typography>
           <BarChart />
           {!!username && (

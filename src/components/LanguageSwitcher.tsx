@@ -6,7 +6,7 @@ export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
   return (
-    <ButtonGroup variant="contained" color="primary">
+    <ButtonGroup variant="contained" color="primary" size="small">
       <Button
         onClick={() => {
           i18n.changeLanguage("en");

@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
@@ -15,20 +15,15 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth(firebaseApp);
 export const firebaseDb = getFirestore(firebaseApp);
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    {/* <React.Suspense fallback="loading..."> */}
     <Router>
       <ContextProvider>
         <App />
       </ContextProvider>
     </Router>
-    {/* </React.Suspense> */}
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
