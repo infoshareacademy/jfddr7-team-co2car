@@ -16,6 +16,7 @@ import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { Context } from "./../ContextProvider";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { doc, deleteDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import "../i18n";
 
@@ -23,17 +24,30 @@ interface Trip {
   date: string;
   emission: number;
   owner: string;
+  id: string;
 }
+
+
 
 export const Profile = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
   const { username } = useContext(Context);
-  const [elements, setElements] = useState<Trip[]>([]);
   const { totalEmission, setTotalEmission } = useContext(Context);
+  const [elements, setElements] = useState<Trip[]>([]);
+  const [reloader, setReloader] = useState(false);
 
   const deleteLabel = {
     title: `${t("delete")}`,
+  };
+
+  const deleteTrip = async (tripId: string): Promise<void> => {
+    try {
+      await deleteDoc(doc(firebaseDb, "Trips", tripId));
+    } catch (error) {
+      console.log(error);
+    }
+    setReloader(!reloader);
   };
 
   useEffect(() => {
@@ -46,25 +60,27 @@ export const Profile = () => {
         const myData = await getDocs(q);
         const tmpArr: Trip[] = [];
         myData.forEach((el) => {
-          const { date, emission, owner } = el.data();
-          tmpArr.push({ date, emission, owner });
+          const { date, emission, owner, id } = el.data();
+          tmpArr.push({ date, emission, owner, id });
+          console.log(tmpArr);
+          console.log(el.data())
         });
         setElements(tmpArr);
         let emiSum: number = 0;
         tmpArr.forEach((el) => {
           return (emiSum += el.emission);
         });
-        console.log(emiSum);
+        // console.log(emiSum);
         setTotalEmission(emiSum.toFixed(2));
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, []);
+  }, [reloader]);
   //stan aktualizuje się po wykonaniu funkcji fetchData()
-  console.log(totalEmission);
-  console.log(elements);
+  // console.log(totalEmission);
+  // console.log(elements);
 
   return (
     <Wrapper>
@@ -98,11 +114,16 @@ export const Profile = () => {
             <div style={{ height: "200px", overflowY: "auto" }}>
               {elements.map((el, index) => (
                 <ListItem
+                // tripId={}
                   key={index}
                   disablePadding={true}
                   secondaryAction={
                     <Tooltip {...deleteLabel} placement="right" arrow>
-                      <IconButton edge="end" aria-label="delete">
+                      <IconButton
+                        onClick={() => {deleteTrip(el.id)}}
+                        edge="end"
+                        aria-label="delete"
+                      >
                         <DeleteIcon style={{ color: "#62757f" }} />
                       </IconButton>
                     </Tooltip>
