@@ -27,8 +27,6 @@ interface Trip {
   id: string;
 }
 
-
-
 export const Profile = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
@@ -63,7 +61,7 @@ export const Profile = () => {
           const { date, emission, owner, id } = el.data();
           tmpArr.push({ date, emission, owner, id });
           console.log(tmpArr);
-          console.log(el.data())
+          console.log(el.data());
         });
         setElements(tmpArr);
         let emiSum: number = 0;
@@ -114,13 +112,15 @@ export const Profile = () => {
             <div style={{ height: "200px", overflowY: "auto" }}>
               {elements.map((el, index) => (
                 <ListItem
-                // tripId={}
+                  // tripId={}
                   key={index}
                   disablePadding={true}
                   secondaryAction={
                     <Tooltip {...deleteLabel} placement="right" arrow>
                       <IconButton
-                        onClick={() => {deleteTrip(el.id)}}
+                        onClick={() => {
+                          deleteTrip(el.id);
+                        }}
                         edge="end"
                         aria-label="delete"
                       >
@@ -154,7 +154,7 @@ export const Profile = () => {
           >
             {t("annualAmount")} {totalEmission} kg
           </Typography>
-          <Box style={{ marginBottom: "3em", paddingRight: "4em" }}>
+          <Box style={{ marginBottom: "3em" }}>
             <VertBarChart />
           </Box>
         </Box>

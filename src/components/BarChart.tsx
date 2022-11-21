@@ -74,7 +74,14 @@ export const BarChart = () => {
 
   return (
     <>
-      <div style={{ width: "50vw", margin: "auto auto", marginBottom: "2em" }}>
+      <div
+        style={{
+          width: "95vw",
+          maxWidth: "600px",
+          margin: "auto auto",
+          marginBottom: "2em",
+        }}
+      >
         <Bar options={options} data={data} />
         <Link
           href="https://www.myclimate.org/"

@@ -11,7 +11,7 @@ i18next
       en: {
         translation: {
           // NAVIGATION
-          home: "Home",
+          home: "Calc",
           profile: "Profile",
           signOut: "Sign Out",
           signIn: "Sign In",
@@ -58,6 +58,7 @@ i18next
           resultUnit: "kg of CO₂",
           save: "Save result",
           tooltip: "Sign in to use this feature",
+          errorRequiredFields: "Please choose distance and car",
           // PROFILE
           myData: "My Data",
           annualAmount: "The amount of your car's annual carbon emission is",
@@ -76,7 +77,7 @@ i18next
       pl: {
         translation: {
           // NAVIGATION
-          home: "Strona główna",
+          home: "Oblicz",
           profile: "Profil",
           signOut: "Wyloguj",
           signIn: "Zaloguj",
@@ -123,6 +124,7 @@ i18next
           resultUnit: "kg CO₂",
           save: "Zapisz wynik",
           tooltip: "Zaloguj się, aby skorzystać z tej funkcji",
+          errorRequiredFields: "Podaj dystans i samochód",
           // PROFILE
           myData: "Moje dane",
           annualAmount: "Roczna suma emisji twojego samochodu to",
@@ -130,7 +132,7 @@ i18next
           // CHARTS
           chartLabelMine: "Mój poziom emisji",
           chartLabelEUMonth:
-            "Średni miesięczna suma emisji CO₂ generowana przez jednego mieszkańca UE",
+            "Średnia miesięczna suma emisji CO₂ generowana przez jednego mieszkańca UE",
           chartLabelAcceptable:
             "Maksymalna roczna ilość CO₂ generowana przez jedną osobę, aby powstrzymać zmiany klimatyczne",
           chartLabelEUYear:

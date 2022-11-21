@@ -39,7 +39,7 @@ export const Navigation = ({ variant, bottomDivRef }: NavigationProps) => {
 
   return (
     <AppBar position="static">
-      <Toolbar sx={{ flexBasis: "100%" }}>
+      <Toolbar className="navigation" sx={{ flexBasis: "100%" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CO₂CAR
         </Typography>
@@ -66,6 +66,7 @@ export const Navigation = ({ variant, bottomDivRef }: NavigationProps) => {
               onClick={() => {
                 handleLogOut();
               }}
+              sx={{ lineHeight: 1 }}
             >
               {t("signOut")}
             </Button>

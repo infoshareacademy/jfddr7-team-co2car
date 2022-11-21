@@ -13,6 +13,11 @@ export const Wrapper = styled.div`
     .bigScreenOnly {
       display: none;
     }
+
+    .navigation {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   @media screen and (min-width: 769px) {
