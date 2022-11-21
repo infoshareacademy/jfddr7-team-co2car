@@ -77,7 +77,7 @@ export const BarChart = () => {
       <div
         style={{
           width: "95vw",
-          maxWidth: "600px",
+          maxWidth: "700px",
           margin: "auto auto",
           marginBottom: "2em",
         }}

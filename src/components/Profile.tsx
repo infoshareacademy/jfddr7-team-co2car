@@ -60,8 +60,8 @@ export const Profile = () => {
         myData.forEach((el) => {
           const { date, emission, owner, id } = el.data();
           tmpArr.push({ date, emission, owner, id });
-          console.log(tmpArr);
-          console.log(el.data());
+          // console.log(tmpArr);
+          // console.log(el.data());
         });
         setElements(tmpArr);
         let emiSum: number = 0;

@@ -202,7 +202,7 @@ export const Home: FC = () => {
   }, [chosenMake]);
 
   const fetchEmission = async () => {
-    if (!(distance && chosenMake && chosenModel && date)) {
+    if (!(distance && chosenMake && chosenModel)) {
       setErrorMessage(`${t("errorRequiredFields")}`);
       setInputError({ error: true });
       setTimeout(() => {

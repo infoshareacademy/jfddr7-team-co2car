@@ -16,11 +16,12 @@ export const StyledLogin = styled.div`
     align-items: center;
   }
 
-  @media screen and (max-width: 799px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
 
     form {
       max-width: initial;
+      min-width: initial;
     }
   }
 `;
