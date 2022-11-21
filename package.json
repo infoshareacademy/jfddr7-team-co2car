@@ -1,8 +1,7 @@
 {
   "name": "jfddr7-team-co2car",
   "version": "0.1.0",
-  "homepage": "https://infoshareacademy.github.io/jfddr7-team-co2car",
-  "private": true,
+    "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
