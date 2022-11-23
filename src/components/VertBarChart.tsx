@@ -43,19 +43,19 @@ export const VertBarChart = () => {
     labels,
     datasets: [
       {
-        label: `${t("chartLabelMine")} [t]`,
+        label: `1.`,
         data: [+totalEmission / 1000],
         backgroundColor: "#af4448",
       },
 
       {
-        label: `${t("chartLabelAcceptable")} [0.6 t]`,
+        label: `2.*`,
         data: [0.6],
         backgroundColor: "#46a38c",
       },
 
       {
-        label: `${t("chartLabelEUYear")} [8.4 t]`,
+        label: `3.*`,
         data: [8.4],
         backgroundColor: "#e57373",
       },

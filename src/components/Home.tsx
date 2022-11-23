@@ -357,6 +357,18 @@ export const Home: FC = () => {
             {emission} {t("resultUnit")}
           </Typography>
           <BarChart />
+          <Box
+            style={{
+              color: "#62757f",
+              fontSize: "0.9rem",
+              marginBottom: "2em",
+            }}
+          >
+            <p>1. {t("chartLabelMine")} [kg]</p>
+            <p>2. {t("chartLabelEUMonth")} [700 kg]</p>
+            <p>3. {t("chartLabelAcceptable")} [50 kg]</p>
+          </Box>
+
           {!!username && (
             <Button
               variant="contained"

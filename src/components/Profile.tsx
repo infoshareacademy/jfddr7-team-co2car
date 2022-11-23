@@ -162,8 +162,20 @@ export const Profile = () => {
           >
             {t("annualAmount")} {totalEmission} kg
           </Typography>
-          <Box style={{ marginBottom: "3em" }}>
+          <Box>
             <VertBarChart />
+          </Box>
+
+          <Box
+            style={{
+              color: "#62757f",
+              fontSize: "0.9rem",
+              marginBottom: "2em",
+            }}
+          >
+            <p>1. {t("chartLabelMine")} [t]</p>
+            <p>2. {t("chartLabelAcceptable")} [0.6 t]</p>
+            <p>3. {t("chartLabelEUYear")} [8.4 t]</p>
           </Box>
         </Box>
       </Container>
