@@ -50,20 +50,20 @@ export const BarChart = () => {
     labels,
     datasets: [
       {
-        label: `${t("chartLabelMine")} [kg]`,
+        label: `1.`,
         //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         // data: [emission / 1000],
         data: [emission],
         backgroundColor: "#af4448",
       },
       {
-        label: `${t("chartLabelEUMonth")} [700 kg]`,
+        label: `2.*`,
         //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         data: [0.7 * 1000],
         backgroundColor: "#e57373",
       },
       {
-        label: `${t("chartLabelAcceptable")} [50 kg]`,
+        label: `3.*`,
         //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         data: [0.05 * 1000],
         backgroundColor: "#46a38c",
